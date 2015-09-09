@@ -8,7 +8,7 @@ library(ggplot2)
 library(grid)
 
 
-setwd("~/Dropbox/Frost_Research/Extended Macer Wines/EM Analysis/")
+setwd("~/Dropbox/Frost_Research/Extended Macer Wines/EM Analysis")
 load("EMdata.Rdata")
 #save(list = c("em.da", "ppt", "stat_sum_single"), file = "EMdata.Rdata")
 

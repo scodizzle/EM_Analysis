@@ -1,0 +1,269 @@
+ Response RedFruit :
+                       Df  Sum Sq Mean Sq F value    Pr(>F)    
+judge                  11 2249.14 204.468 92.2161 < 2.2e-16 ***
+wine                    8   69.06   8.633  3.8934 0.0001733 ***
+sen.rep                 2   48.72  24.361 10.9869 2.079e-05 ***
+judge:wine             88  280.07   3.183  1.4354 0.0089270 ** 
+judge:sen.rep          22  120.29   5.468  2.4660 0.0002479 ***
+wine:ferm.rep          18   51.31   2.850  1.2856 0.1905987    
+wine:sen.rep           16   54.81   3.426  1.5450 0.0792259 .  
+judge:wine:ferm.rep   198  590.69   2.983  1.3455 0.0043888 ** 
+wine:ferm.rep:sen.rep  36   89.23   2.479  1.1178 0.2958083    
+Residuals             572 1268.28   2.217                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response DarkJam :
+                       Df  Sum Sq Mean Sq F value    Pr(>F)    
+judge                  11 2279.54 207.231 64.1579 < 2.2e-16 ***
+wine                    8   38.26   4.783  1.4806  0.161035    
+sen.rep                 2   10.62   5.311  1.6443  0.194057    
+judge:wine             88  358.83   4.078  1.2624  0.064475 .  
+judge:sen.rep          22  244.74  11.125  3.4441 2.776e-07 ***
+wine:ferm.rep          18   66.92   3.718  1.1509  0.298296    
+wine:sen.rep           16   45.20   2.825  0.8745  0.599291    
+judge:wine:ferm.rep   198  840.31   4.244  1.3139  0.008013 ** 
+wine:ferm.rep:sen.rep  36   94.79   2.633  0.8152  0.771269    
+Residuals             572 1847.57   3.230                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response PruneRaisin :
+                       Df  Sum Sq Mean Sq F value    Pr(>F)    
+judge                  11 2144.91 194.992 71.5834 < 2.2e-16 ***
+wine                    8   36.86   4.607  1.6914   0.09747 .  
+sen.rep                 2    1.54   0.770  0.2827   0.75385    
+judge:wine             88  289.08   3.285  1.2059   0.11098    
+judge:sen.rep          22  160.89   7.313  2.6847 5.779e-05 ***
+wine:ferm.rep          18   32.10   1.783  0.6547   0.85607    
+wine:sen.rep           16   48.52   3.032  1.1132   0.33860    
+judge:wine:ferm.rep   198  401.95   2.030  0.7453   0.99264    
+wine:ferm.rep:sen.rep  36  102.36   2.843  1.0438   0.40182    
+Residuals             572 1558.12   2.724                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response CitrusFloral :
+                       Df  Sum Sq Mean Sq  F value    Pr(>F)    
+judge                  11 1929.37 175.397 133.0710 < 2.2e-16 ***
+wine                    8   44.09   5.511   4.1813 7.038e-05 ***
+sen.rep                 2    4.91   2.457   1.8644  0.155929    
+judge:wine             88  272.48   3.096   2.3492 2.240e-09 ***
+judge:sen.rep          22  136.16   6.189   4.6955 2.524e-11 ***
+wine:ferm.rep          18   24.53   1.363   1.0338  0.418897    
+wine:sen.rep           16   25.51   1.594   1.2095  0.255241    
+judge:wine:ferm.rep   198  356.75   1.802   1.3670  0.002867 ** 
+wine:ferm.rep:sen.rep  36   32.90   0.914   0.6934  0.912252    
+Residuals             572  753.94   1.318                       
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response Bay :
+                       Df  Sum Sq Mean Sq  F value  Pr(>F)    
+judge                  11 2411.83 219.257 104.7849 < 2e-16 ***
+wine                    8   18.66   2.332   1.1147 0.35121    
+sen.rep                 2    9.84   4.919   2.3508 0.09621 .  
+judge:wine             88  183.14   2.081   0.9946 0.49754    
+judge:sen.rep          22  288.59  13.118   6.2691 < 2e-16 ***
+wine:ferm.rep          18   30.76   1.709   0.8168 0.68125    
+wine:sen.rep           16   58.56   3.660   1.7490 0.03477 *  
+judge:wine:ferm.rep   198  450.38   2.275   1.0871 0.22995    
+wine:ferm.rep:sen.rep  36  118.96   3.304   1.5792 0.01875 *  
+Residuals             572 1196.88   2.092                     
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response Vegetative :
+                       Df  Sum Sq Mean Sq F value    Pr(>F)    
+judge                  11 1564.57 142.234 82.4522 < 2.2e-16 ***
+wine                    8   25.08   3.134  1.8170 0.0712317 .  
+sen.rep                 2    0.46   0.232  0.1346 0.8741034    
+judge:wine             88  245.96   2.795  1.6203 0.0007008 ***
+judge:sen.rep          22   98.47   4.476  2.5948 0.0001058 ***
+wine:ferm.rep          18   40.05   2.225  1.2899 0.1876910    
+wine:sen.rep           16   44.32   2.770  1.6057 0.0624799 .  
+judge:wine:ferm.rep   198  441.66   2.231  1.2931 0.0117325 *  
+wine:ferm.rep:sen.rep  36   59.40   1.650  0.9566 0.5436821    
+Residuals             572  986.73   1.725                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response PepperSpice :
+                       Df  Sum Sq Mean Sq  F value    Pr(>F)    
+judge                  11 2308.69 209.881 139.0328 < 2.2e-16 ***
+wine                    8   56.28   7.036   4.6606 1.542e-05 ***
+sen.rep                 2    2.06   1.032   0.6836    0.5052    
+judge:wine             88  248.16   2.820   1.8681 1.375e-05 ***
+judge:sen.rep          22  217.86   9.903   6.5601 < 2.2e-16 ***
+wine:ferm.rep          18   13.74   0.763   0.5056    0.9561    
+wine:sen.rep           16   33.47   2.092   1.3858    0.1426    
+judge:wine:ferm.rep   198  306.38   1.547   1.0250    0.4086    
+wine:ferm.rep:sen.rep  36   61.90   1.719   1.1390    0.2688    
+Residuals             572  863.48   1.510                       
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response Earthy :
+                       Df  Sum Sq Mean Sq F value    Pr(>F)    
+judge                  11 1173.52 106.684 73.0162 < 2.2e-16 ***
+wine                    8   48.53   6.066  4.1514 7.730e-05 ***
+sen.rep                 2   37.34  18.668 12.7766 3.729e-06 ***
+judge:wine             88  204.68   2.326  1.5919 0.0010614 ** 
+judge:sen.rep          22  305.04  13.866  9.4899 < 2.2e-16 ***
+wine:ferm.rep          18   25.39   1.411  0.9656 0.4985070    
+wine:sen.rep           16   63.82   3.989  2.7299 0.0003208 ***
+judge:wine:ferm.rep   198  311.64   1.574  1.0772 0.2545325    
+wine:ferm.rep:sen.rep  36   60.76   1.688  1.1552 0.2493030    
+Residuals             572  835.75   1.461                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response Aldehydic :
+                       Df Sum Sq Mean Sq  F value    Pr(>F)    
+judge                  11 3704.2  336.75 238.7129 < 2.2e-16 ***
+wine                    8   97.0   12.12   8.5947 4.275e-11 ***
+sen.rep                 2    0.4    0.21   0.1494   0.86130    
+judge:wine             88  309.7    3.52   2.4949 1.328e-10 ***
+judge:sen.rep          22  135.6    6.17   4.3704 2.929e-10 ***
+wine:ferm.rep          18   24.8    1.38   0.9770   0.48483    
+wine:sen.rep           16   22.1    1.38   0.9793   0.47796    
+judge:wine:ferm.rep   198  298.0    1.51   1.0669   0.28202    
+wine:ferm.rep:sen.rep  36   70.4    1.96   1.3871   0.06913 .  
+Residuals             572  806.9    1.41                       
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response Alcohol :
+                       Df Sum Sq Mean Sq  F value    Pr(>F)    
+judge                  11 4030.1  366.38 162.2041 < 2.2e-16 ***
+wine                    8   76.0    9.50   4.2073 6.484e-05 ***
+sen.rep                 2   37.1   18.54   8.2071 0.0003061 ***
+judge:wine             88  283.3    3.22   1.4251 0.0101583 *  
+judge:sen.rep          22  180.4    8.20   3.6300 7.170e-08 ***
+wine:ferm.rep          18   90.7    5.04   2.2307 0.0025610 ** 
+wine:sen.rep           16   56.5    3.53   1.5627 0.0739736 .  
+judge:wine:ferm.rep   198  362.1    1.83   0.8097 0.9606288    
+wine:ferm.rep:sen.rep  36   58.8    1.63   0.7236 0.8841578    
+Residuals             572 1292.0    2.26                       
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response VA :
+                       Df  Sum Sq Mean Sq  F value    Pr(>F)    
+judge                  11 2961.37 269.215 183.8424 < 2.2e-16 ***
+wine                    8   28.65   3.581   2.4457   0.01315 *  
+sen.rep                 2    1.19   0.595   0.4060   0.66647    
+judge:wine             88  318.83   3.623   2.4741 1.996e-10 ***
+judge:sen.rep          22  118.23   5.374   3.6698 5.354e-08 ***
+wine:ferm.rep          18   24.18   1.344   0.9175   0.55718    
+wine:sen.rep           16   29.73   1.858   1.2690   0.21157    
+judge:wine:ferm.rep   198  287.51   1.452   0.9916   0.52130    
+wine:ferm.rep:sen.rep  36   53.35   1.482   1.0120   0.45198    
+Residuals             572  837.62   1.464                       
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response Sweet :
+                       Df Sum Sq Mean Sq  F value    Pr(>F)    
+judge                  11 3323.1 302.098 171.6728 < 2.2e-16 ***
+wine                    8   11.5   1.432   0.8139  0.590500    
+sen.rep                 2   33.0  16.517   9.3862 9.752e-05 ***
+judge:wine             88  246.4   2.800   1.5914  0.001069 ** 
+judge:sen.rep          22  229.1  10.412   5.9168 2.348e-15 ***
+wine:ferm.rep          18   35.7   1.982   1.1262  0.321814    
+wine:sen.rep           16   45.4   2.839   1.6135  0.060591 .  
+judge:wine:ferm.rep   198  372.8   1.883   1.0700  0.273751    
+wine:ferm.rep:sen.rep  36   68.0   1.889   1.0733  0.357577    
+Residuals             572 1006.6   1.760                       
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response Sour :
+                       Df Sum Sq Mean Sq  F value    Pr(>F)    
+judge                  11 3410.3 310.024 209.5061 < 2.2e-16 ***
+wine                    8   37.7   4.715   3.1865  0.001512 ** 
+sen.rep                 2   43.5  21.741  14.6917 5.997e-07 ***
+judge:wine             88  233.7   2.656   1.7947 4.637e-05 ***
+judge:sen.rep          22  190.7   8.666   5.8564 3.720e-15 ***
+wine:ferm.rep          18   19.8   1.102   0.7445  0.765397    
+wine:sen.rep           16   44.0   2.753   1.8602  0.021575 *  
+judge:wine:ferm.rep   198  360.0   1.818   1.2288  0.034883 *  
+wine:ferm.rep:sen.rep  36   70.9   1.970   1.3313  0.097197 .  
+Residuals             572  846.4   1.480                       
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response Bitter :
+                       Df Sum Sq Mean Sq  F value    Pr(>F)    
+judge                  11 3170.9 288.267 115.2434 < 2.2e-16 ***
+wine                    8   44.3   5.535   2.2129   0.02507 *  
+sen.rep                 2   91.6  45.789  18.3054 1.969e-08 ***
+judge:wine             88  198.1   2.251   0.8999   0.72668    
+judge:sen.rep          22  320.1  14.551   5.8172 5.011e-15 ***
+wine:ferm.rep          18   56.7   3.150   1.2591   0.20906    
+wine:sen.rep           16   30.2   1.889   0.7552   0.73683    
+judge:wine:ferm.rep   198  481.6   2.432   0.9725   0.58701    
+wine:ferm.rep:sen.rep  36   98.3   2.729   1.0911   0.33201    
+Residuals             572 1430.8   2.501                       
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response Hot :
+                       Df  Sum Sq Mean Sq  F value    Pr(>F)    
+judge                  11 3117.54 283.412 124.1257 < 2.2e-16 ***
+wine                    8   70.10   8.763   3.8379 0.0002060 ***
+sen.rep                 2   14.65   7.325   3.2083 0.0411533 *  
+judge:wine             88  263.41   2.993   1.3110 0.0387434 *  
+judge:sen.rep          22  280.08  12.731   5.5757 3.153e-14 ***
+wine:ferm.rep          18  103.35   5.742   2.5147 0.0005461 ***
+wine:sen.rep           16   23.87   1.492   0.6534 0.8400310    
+judge:wine:ferm.rep   198  483.91   2.444   1.0704 0.2726155    
+wine:ferm.rep:sen.rep  36   75.88   2.108   0.9231 0.5999513    
+Residuals             572 1306.03   2.283                       
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response Astringency :
+                       Df  Sum Sq Mean Sq F value    Pr(>F)    
+judge                  11 2014.31 183.119 74.9200 < 2.2e-16 ***
+wine                    8   65.45   8.181  3.3470 0.0009313 ***
+sen.rep                 2   23.78  11.888  4.8636 0.0080452 ** 
+judge:wine             88  259.56   2.950  1.2067 0.1101789    
+judge:sen.rep          22  175.38   7.972  3.2614 1.035e-06 ***
+wine:ferm.rep          18   65.79   3.655  1.4953 0.0854496 .  
+wine:sen.rep           16   69.69   4.356  1.7821 0.0302167 *  
+judge:wine:ferm.rep   198  584.65   2.953  1.2081 0.0481590 *  
+wine:ferm.rep:sen.rep  36  106.17   2.949  1.2066 0.1936904    
+Residuals             572 1398.08   2.444                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response Drying :
+                       Df  Sum Sq Mean Sq F value    Pr(>F)    
+judge                  11 2199.22 199.929 80.0411 < 2.2e-16 ***
+wine                    8   70.79   8.849  3.5428 0.0005124 ***
+sen.rep                 2   31.53  15.766  6.3119 0.0019436 ** 
+judge:wine             88  168.79   1.918  0.7679 0.9379020    
+judge:sen.rep          22  177.66   8.076  3.2330 1.267e-06 ***
+wine:ferm.rep          18   51.52   2.862  1.1458 0.3030734    
+wine:sen.rep           16   67.69   4.231  1.6938 0.0437600 *  
+judge:wine:ferm.rep   198  648.45   3.275  1.3111 0.0084379 ** 
+wine:ferm.rep:sen.rep  36  109.28   3.036  1.2153 0.1852408    
+Residuals             572 1428.76   2.498                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+ Response AstTexture :
+                       Df  Sum Sq Mean Sq F value    Pr(>F)    
+judge                  11 2540.09 230.917 70.6309 < 2.2e-16 ***
+wine                    8  114.82  14.353  4.3901 3.641e-05 ***
+sen.rep                 2    0.50   0.251  0.0767   0.92617    
+judge:wine             88  361.14   4.104  1.2553   0.06928 .  
+judge:sen.rep          22  122.86   5.584  1.7081   0.02350 *  
+wine:ferm.rep          18   91.57   5.087  1.5561   0.06636 .  
+wine:sen.rep           16   63.10   3.943  1.2062   0.25783    
+judge:wine:ferm.rep   198  779.48   3.937  1.2041   0.05111 .  
+wine:ferm.rep:sen.rep  36  152.68   4.241  1.2972   0.11856    
+Residuals             572 1870.07   3.269                      
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
