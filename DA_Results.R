@@ -10,7 +10,7 @@ library(grid)
 
 setwd("~/Dropbox/Frost_Research/Extended Macer Wines/EM Analysis")
 load("EMdata.Rdata")
-#save(list = c("em.da", "ppt", "stat_sum_single"), file = "EMdata.Rdata")
+save(list = c("em.da", "ppt", "stat_sum_single"), file = "EMdata.Rdata")
 
 ############################################################################################
 ## ANOVA of the DA ##
@@ -126,6 +126,36 @@ qf(0.95, 8,16)
 sum.aov.em[[18]]
 AstTex.lm = lm(AstTexture ~ (judge + wine + wine/ferm.rep + sen.rep)^2, data = em.da)
 AstTex.LSD = LSD.test(AstTex.lm, trt="wine", group=TRUE)
+
+####
+# Bind the LSD together into a single dataFrame
+means.table <- cbind(
+RedFruit.LSD$groups[order(RedFruit.LSD$groups$trt),],  
+PepperSpice.LSD$groups[order(PepperSpice.LSD$groups$trt),],
+Aldehydic.LSD$groups[order(Aldehydic.LSD$groups$trt),],
+Alcohol.LSD$groups[order(Alcohol.LSD$groups$trt),],
+Bitter.LSD$groups[order(Bitter.LSD$groups$trt),],
+Hot.LSD$groups[order(Hot.LSD$groups$trt),],
+AstTex.LSD$groups[order(AstTex.LSD$groups$trt),]
+)
+means.table <- means.table[,-c(4,7,10,13,16,19)]
+colnames(means.table) = c("Wine","Red Fruit", "g1",
+                                "Pepper Spice", "g2",
+                                "Aldehydic", "g3",
+                                "Alcohol", "g4",
+                                "Bitter", "g5",
+                                "Hot", "g6",
+                                "Ast. Texture", "g7")
+
+cbind(
+RedFruit.LSD$statistics[4],
+PepperSpice.LSD$statistics[4],
+Aldehydic.LSD$statistics[4],
+Alcohol.LSD$statistics[4],
+Bitter.LSD$statistics[4],
+Hot.LSD$statistics[4],
+AstTex.LSD$statistics[4]
+)
 
 ############################################################################################
 
