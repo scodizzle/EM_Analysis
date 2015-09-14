@@ -98,12 +98,12 @@ lppsppN.LSD$statistics[4],
 spplppN.LSD$statistics[4]
 )
 
+##############################################################################################################################
 ## CVA of the 5 unique measuremts from the ppt data set...  do we want to include 
 # scale and log transform the data first!!
 # log ttansform the Au values
 ppt$LPP = log(ppt$LPP.Au)
 ppt$SPP = log(ppt$SPP.Au)
-
 # scale everything!
 pptScale = scale(ppt[,c("TotalPhenol","Anthocyanin", "SPP", "LPP", "Tannin") ], center=TRUE)
 # form up the dataset to use
