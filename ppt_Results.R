@@ -98,21 +98,61 @@ lppsppN.LSD$statistics[4],
 spplppN.LSD$statistics[4]
 )
 
-##  ppt means for PCA/CVA plotting
-ppt.means <- aggregate(ppt[,c("TotalPhenol", "Anthocyanin", "SPP.Au", "LPP.Au", "SPP.LPP.Au", "Tannin", "NTP")], 
-          by=list(ppt$wine), mean)
+## CVA of the 5 unique measuremts from the ppt data set...  do we want to include 
+# scale and log transform the data first!!
+# log ttansform the Au values
+ppt$LPP = log(ppt$LPP.Au)
+ppt$SPP = log(ppt$SPP.Au)
+
+# scale everything!
+pptScale = scale(ppt[,c("TotalPhenol","Anthocyanin", "SPP", "LPP", "Tannin") ], center=TRUE)
+# form up the dataset to use
+pptScale = data.frame(wine = ppt$wine, pptScale)
+
+pptMan <- manova(as.matrix(ppt[,c("TotalPhenol", "Anthocyanin", "SPP", "LPP", "Tannin")])
+               ~ wine, data=pptScale)
+summary(pptMan, test = "Wilks")
+
+pptCVA <- candisc(pptMan)
+# plot
+ggplot(pptCVA$means, aes(x=Can1, y=Can2, label=row.names(pptCVA$means))) +
+  geom_text(fontface="bold", size=7) +
+  geom_segment(data=as.data.frame(pptCVA$coeffs.std), aes(x=0, y=0, xend=Can1*7, yend=Can2*7, label=row.names(pptCVA$coeffs.std)), 
+               arrow=arrow(length=unit(0.3,"cm")), color="black", size=1) +
+  geom_text(data=as.data.frame(pptCVA$coeffs.std), aes(x=Can1*7, y=Can2*7, label=row.names(pptCVA$coeffs.std))) +
+  scale_x_continuous(paste("Can 1 ", round(pptCVA$pct[1],1), "%", sep="")) + #limits = c(-1,1)) +
+  scale_y_continuous(paste("Can 2 ", round(pptCVA$pct[2],1), "%", sep="")) +
+  theme(axis.text = element_text(size=16, color="black"),
+        axis.title = element_text(size=16, color="black"),
+        panel.background = element_rect(fill = "transparent"),
+        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
+        panel.grid.major = element_line(color="transparent"))
+
+# scree plot and % explained
+pptCVA$pct
+sum(pptCVA$pct[1:2])
+sum(pptCVA$pct[1:3])
+# 90% of the varaibilty accounted for in the first 3 dimensions
+# Scree Plot ---  clearly the first dim drives the space...  not sure what to do?  can use a PCA?  the PCA from 
+# this same dataset gives 62% and 19%....  
+ggplot(data.frame(x=1:5, EigValue=pptCVA$eigenvalues), aes(x,EigValue)) + geom_point() + geom_line()
+
+ggplot(melt(pptScale), aes(x=wine, y=value, color=variable)) + geom_point()
 
 
-
-
-
-
-
-
-
+##############################################################################################################################
+######## GRAVE YARD ##########################################################################################################
+##############################################################################################################################
+##############################################################################################################################
+######## GRAVE YARD ##########################################################################################################
+##############################################################################################################################
+##############################################################################################################################
+######## GRAVE YARD ##########################################################################################################
+##############################################################################################################################
 #####  Most everything below is garbage......    maybe steal the plot basic parameters
 
-
+ppt.means <- aggregate(ppt[,c("TotalPhenol", "Anthocyanin", "SPP.Au", "LPP.Au", "SPP.LPP.Au", "Tannin", "NTP")], 
+                       by=list(ppt$wine), mean)
 
 ########  TANNIN PPT DATA  ###########
 ## total tannin
