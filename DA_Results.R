@@ -165,26 +165,121 @@ sigMan <- manova(as.matrix(em.da[,c("RedFruit","PepperSpice","Aldehydic","Alcoho
                  ~ wine, data=em.da)
 summary(sigMan, test="Wilks")
 # CVA and its plot
-emSig = candisc(sigMan)
-ggplot(emSig$means, aes(x=Can1, y=Can2, label=row.names(emSig$means))) +
+sigCVA = candisc(sigMan)
+ggplot(sigCVA$means, aes(x=Can1, y=Can2, label=row.names(sigCVA$means))) +
   geom_text(fontface="bold", size=7) +
-  geom_segment(data=as.data.frame(emSig$coeffs.std), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(emSig$coeffs.std)), 
-               arrow=arrow(length=unit(0.3,"cm")), color="red", size=1) +
-  geom_text(data=as.data.frame(emSig$coeffs.std), aes(x=Can1, y=Can2, label=row.names(emSig$coeffs.std))) +
-  scale_x_continuous(paste("Can 1 ", round(emSig$pct[1],1), "%", sep=""), limits=c(-0.75, 0.65)) +
-  scale_y_continuous(paste("Can 2 ", round(emSig$pct[2],1), "%", sep="")) +
+  geom_segment(data=as.data.frame(sigCVA$coeffs.std), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(sigCVA$coeffs.std)), 
+               arrow=arrow(length=unit(0.3,"cm")), color="black", size=1) +
+  geom_text(data=as.data.frame(sigCVA$coeffs.std), aes(x=Can1, y=Can2, label=row.names(sigCVA$coeffs.std))) +
+  scale_x_continuous(paste("Can 1 ", round(sigCVA$pct[1],1), "%", sep=""), limits = c(-1,1)) +
+  scale_y_continuous(paste("Can 2 ", round(sigCVA$pct[2],1), "%", sep="")) +
   theme(axis.text = element_text(size=16, color="black"),
         axis.title = element_text(size=16, color="black"),
         panel.background = element_rect(fill = "transparent"),
         panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
         panel.grid.major = element_line(color="transparent"))
-## using only the significant terms, the six terms can account for ~80% of the 
+## using only the significant terms, the six terms can account for 81.4% of the varability with the
+## first two dinensions.  
+sigCVA$pct
+sum(sigCVA$pct[1:2])
+sum(sigCVA$pct[1:3])
+# 90% of the varaibilty accounted for in the first 3 dimensions
+# Scree Plot
+ggplot(data.frame(x=1:7, EigValue=sigCVA$eigenvalues), aes(x,EigValue)) + geom_point() + geom_line()
+# we can see that it breaks at 3
+# Bartlets test?  How to do this?
+
+
+
+
+
+######################################################################################
+## plot of the seven significant discriptors for a presentation
+em.mean = aggregate(em.da[,-c(1:8)], by = list(em.da$wine), mean)
+meltMean = melt(em.mean)
+
+meltMean[meltMean$variable %in% c("RedFruit","Alcohol","Aldehydic","Bitter","Hot","PepperSpice","AstTexture"),]
+
+ggplot(meltMean[meltMean$variable %in% c("RedFruit","Alcohol","Aldehydic","Bitter","Hot","PepperSpice","AstTexture"),], aes(x=variable, y=value)) +
+  geom_text(aes(label=Group.1, color=Group.1), fontface = "bold", size = 7) +
+  #geom_vline(data=mean7, aes(xintercept=which(mean7$variable == "ethyl.acetate"))) +
+  #geom_vline(xintercept=which(df$x == 'm')) +
+  scale_color_manual(values=c("grey","grey","grey","grey","grey","red","grey", "black", "grey")) + 
+  ylab("Mean Intensity") +
+  #scale_colour_brewer(palette="Set1") +
+  theme(axis.text = element_text(size=16, color="black"),
+        axis.text.x  = element_text(angle=90, vjust=0.5),
+        axis.title = element_text(size=16),
+        axis.title.x = element_blank(),
+        panel.background = element_rect(fill = "transparent"),
+        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
+        panel.grid.major.x = element_line(color="grey", linetype="dashed"),
+        panel.grid.major.y = element_blank(),
+        legend.position = "none")
+
+
+
+
+
+##############################################################################################################################
+######## GRAVE YARD ##########################################################################################################
+##############################################################################################################################
+##############################################################################################################################
+######## GRAVE YARD ##########################################################################################################
+##############################################################################################################################
+##############################################################################################################################
+######## GRAVE YARD ##########################################################################################################
+##############################################################################################################################
+ggplot(data.frame(pca1.mf$x), aes(x=PC1, y=PC2)) +
+  geom_text(label=rownames(pca1.mf$x), fontface = "bold", size = 7) +
+  geom_segment(data=as.data.frame(pca1.mf$rotation), aes(x=0, y=0, xend=PC1*3, yend=PC2*3, label=row.names(pca1.mf$rotation)), 
+               arrow=arrow(length=unit(0.3,"cm")), color="red", size=1) +
+  geom_text(data=as.data.frame(pca1.mf$rotation), aes(x=PC1*3, y=PC2*3, label=row.names(pca1.mf$rotation))) +
+  scale_x_continuous(paste("PC 1 ", round(summary(pca1.mf)$importance[2,1]*100,1), "%", sep="")) +
+  scale_y_continuous(paste("PC 2 ", round(summary(pca1.mf)$importance[2,2]*100,1), "%", sep="")) +
+  theme(axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        panel.background = element_rect(fill = "transparent"),
+        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
+        panel.grid.major = element_line(color="transparent"))
+
+### PCA exp 2 ######
+# POC PD SUB S8
+pca2 = prcomp(em.mean[c("POC", "PD", "SUB", "S8"),])
+pca2.mf = prcomp(em.mean[c("POC", "PD", "SUB", "S8"),
+                         c("Sweet", "Sour", "Bitter", "Hot", "Astringency", "Drying", "AstTexture")])
+#  PCA plot  #
+ggplot(data.frame(pca2$x), aes(x=PC1, y=PC2)) +
+  geom_text(label=rownames(pca2$x), fontface = "bold", size = 7) +
+  geom_segment(data=as.data.frame(pca2$rotation), aes(x=0, y=0, xend=PC1*3, yend=PC2*3, label=row.names(pca2$rotation)), 
+               arrow=arrow(length=unit(0.3,"cm")), color="red", size=1) +
+  geom_text(data=as.data.frame(pca2$rotation), aes(x=PC1*3, y=PC2*3, label=row.names(pca2$rotation))) +
+  scale_x_continuous(paste("PC 1 ", round(summary(pca2)$importance[2,1]*100,1), "%", sep="")) +
+  scale_y_continuous(paste("PC 2 ", round(summary(pca2)$importance[2,2]*100,1), "%", sep="")) +
+  theme(axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        panel.background = element_rect(fill = "transparent"),
+        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
+        panel.grid.major = element_line(color="transparent"))
+
+ggplot(data.frame(pca2.mf$x), aes(x=PC1, y=PC2)) +
+  geom_text(label=rownames(pca2.mf$x), fontface = "bold", size = 7) +
+  geom_segment(data=as.data.frame(pca2.mf$rotation), aes(x=0, y=0, xend=PC1*3, yend=PC2*3, label=row.names(pca2.mf$rotation)), 
+               arrow=arrow(length=unit(0.3,"cm")), color="red", size=1) +
+  geom_text(data=as.data.frame(pca2.mf$rotation), aes(x=PC1*3, y=PC2*3, label=row.names(pca2.mf$rotation))) +
+  scale_x_continuous(paste("PC 1 ", round(summary(pca2.mf)$importance[2,1]*100,1), "%", sep="")) +
+  scale_y_continuous(paste("PC 2 ", round(summary(pca2.mf)$importance[2,2]*100,1), "%", sep="")) +
+  theme(axis.text = element_text(size=14),
+        axis.title = element_text(size=16),
+        panel.background = element_rect(fill = "transparent"),
+        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
+        panel.grid.major = element_line(color="transparent"))
 
 # all wines all terms
 em.man = manova(as.matrix(em.da[,-c(1:8)]) ~ (wine), data = em.da)
 summary(em.man, test="Wilks") ## note sig Wilks
 ## CVA
-em.cva = candisc(sigMan)
+em.cva = candisc(em.man)
 
 ### ggplot2 CVA plot #######
 ggplot(em.cva$means, aes(x=Can1, y=Can2, label=row.names(em.cva$means))) +
@@ -261,81 +356,3 @@ ggplot(data.frame(pca.mf$x), aes(x=PC1, y=PC2)) +
         panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
         panel.grid.major = element_line(color="transparent"))
 dev.off()      
-
-######################################################################################
-em.mean = aggregate(em.da[,-c(1:8)], by = list(em.da$wine), mean)
-meltMean = melt(em.mean)
-
-meltMean[meltMean$variable %in% c("RedFruit","Alcohol","Aldehydic","Bitter","Hot","PepperSpice","AstTexture"),]
-
-ggplot(meltMean[meltMean$variable %in% c("RedFruit","Alcohol","Aldehydic","Bitter","Hot","PepperSpice","AstTexture"),], aes(x=variable, y=value)) +
-  geom_text(aes(label=Group.1, color=Group.1), fontface = "bold", size = 7) +
-  #geom_vline(data=mean7, aes(xintercept=which(mean7$variable == "ethyl.acetate"))) +
-  #geom_vline(xintercept=which(df$x == 'm')) +
-  scale_color_manual(values=c("grey","grey","grey","grey","grey","red","grey", "black", "grey")) + 
-  ylab("Mean Intensity") +
-  #scale_colour_brewer(palette="Set1") +
-  theme(axis.text = element_text(size=16, color="black"),
-        axis.text.x  = element_text(angle=90, vjust=0.5),
-        axis.title = element_text(size=16),
-        axis.title.x = element_blank(),
-        panel.background = element_rect(fill = "transparent"),
-        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
-        panel.grid.major.x = element_line(color="grey", linetype="dashed"),
-        panel.grid.major.y = element_blank(),
-        legend.position = "none")
-
-
-
-
-
-
-
-################################################################################
-######## GRAVE YARD ############################################################
-################################################################################
-ggplot(data.frame(pca1.mf$x), aes(x=PC1, y=PC2)) +
-  geom_text(label=rownames(pca1.mf$x), fontface = "bold", size = 7) +
-  geom_segment(data=as.data.frame(pca1.mf$rotation), aes(x=0, y=0, xend=PC1*3, yend=PC2*3, label=row.names(pca1.mf$rotation)), 
-               arrow=arrow(length=unit(0.3,"cm")), color="red", size=1) +
-  geom_text(data=as.data.frame(pca1.mf$rotation), aes(x=PC1*3, y=PC2*3, label=row.names(pca1.mf$rotation))) +
-  scale_x_continuous(paste("PC 1 ", round(summary(pca1.mf)$importance[2,1]*100,1), "%", sep="")) +
-  scale_y_continuous(paste("PC 2 ", round(summary(pca1.mf)$importance[2,2]*100,1), "%", sep="")) +
-  theme(axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        panel.background = element_rect(fill = "transparent"),
-        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
-        panel.grid.major = element_line(color="transparent"))
-
-### PCA exp 2 ######
-# POC PD SUB S8
-pca2 = prcomp(em.mean[c("POC", "PD", "SUB", "S8"),])
-pca2.mf = prcomp(em.mean[c("POC", "PD", "SUB", "S8"),
-                         c("Sweet", "Sour", "Bitter", "Hot", "Astringency", "Drying", "AstTexture")])
-#  PCA plot  #
-ggplot(data.frame(pca2$x), aes(x=PC1, y=PC2)) +
-  geom_text(label=rownames(pca2$x), fontface = "bold", size = 7) +
-  geom_segment(data=as.data.frame(pca2$rotation), aes(x=0, y=0, xend=PC1*3, yend=PC2*3, label=row.names(pca2$rotation)), 
-               arrow=arrow(length=unit(0.3,"cm")), color="red", size=1) +
-  geom_text(data=as.data.frame(pca2$rotation), aes(x=PC1*3, y=PC2*3, label=row.names(pca2$rotation))) +
-  scale_x_continuous(paste("PC 1 ", round(summary(pca2)$importance[2,1]*100,1), "%", sep="")) +
-  scale_y_continuous(paste("PC 2 ", round(summary(pca2)$importance[2,2]*100,1), "%", sep="")) +
-  theme(axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        panel.background = element_rect(fill = "transparent"),
-        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
-        panel.grid.major = element_line(color="transparent"))
-
-ggplot(data.frame(pca2.mf$x), aes(x=PC1, y=PC2)) +
-  geom_text(label=rownames(pca2.mf$x), fontface = "bold", size = 7) +
-  geom_segment(data=as.data.frame(pca2.mf$rotation), aes(x=0, y=0, xend=PC1*3, yend=PC2*3, label=row.names(pca2.mf$rotation)), 
-               arrow=arrow(length=unit(0.3,"cm")), color="red", size=1) +
-  geom_text(data=as.data.frame(pca2.mf$rotation), aes(x=PC1*3, y=PC2*3, label=row.names(pca2.mf$rotation))) +
-  scale_x_continuous(paste("PC 1 ", round(summary(pca2.mf)$importance[2,1]*100,1), "%", sep="")) +
-  scale_y_continuous(paste("PC 2 ", round(summary(pca2.mf)$importance[2,2]*100,1), "%", sep="")) +
-  theme(axis.text = element_text(size=14),
-        axis.title = element_text(size=16),
-        panel.background = element_rect(fill = "transparent"),
-        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
-        panel.grid.major = element_line(color="transparent"))
-
