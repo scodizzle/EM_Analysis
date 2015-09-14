@@ -71,8 +71,8 @@ ntp.lmN = lm(NTP ~ wine + wine/fermRep, data=ppt)
 ntpN.LSD = LSD.test(ntp.lmN, trt="wine", group=TRUE)
 ntpN.LSD$statistics
 
-# bind together the LSD
-ppt.means <- data.frame(
+# bind together the LSD to export for a table,
+data.frame(
   tpN.LSD$groups[order(tpN.LSD$groups$trt),],
   anoN.LSD$groups[order(anoN.LSD$groups$trt),],
   tanN.LSD$groups[order(tanN.LSD$groups$trt),],
@@ -97,6 +97,16 @@ lppN.LSD$statistics[4],
 lppsppN.LSD$statistics[4],
 spplppN.LSD$statistics[4]
 )
+
+##  ppt means for PCA/CVA plotting
+ppt.means <- aggregate(ppt[,c("TotalPhenol", "Anthocyanin", "SPP.Au", "LPP.Au", "SPP.LPP.Au", "Tannin", "NTP")], 
+          by=list(ppt$wine), mean)
+
+
+
+
+
+
 
 
 

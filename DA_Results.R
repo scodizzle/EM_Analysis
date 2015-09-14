@@ -159,12 +159,32 @@ AstTex.LSD$statistics[4]
 
 ############################################################################################
 
-### MANOVA  #####
+### MANOVA and CVA analysis...    #####
+# significant DA terms
+sigMan <- manova(as.matrix(em.da[,c("RedFruit","PepperSpice","Aldehydic","Alcohol","Bitter","Hot","AstTexture")]) 
+                 ~ wine, data=em.da)
+summary(sigMan, test="Wilks")
+# CVA and its plot
+emSig = candisc(sigMan)
+ggplot(emSig$means, aes(x=Can1, y=Can2, label=row.names(emSig$means))) +
+  geom_text(fontface="bold", size=7) +
+  geom_segment(data=as.data.frame(emSig$coeffs.std), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(emSig$coeffs.std)), 
+               arrow=arrow(length=unit(0.3,"cm")), color="red", size=1) +
+  geom_text(data=as.data.frame(emSig$coeffs.std), aes(x=Can1, y=Can2, label=row.names(emSig$coeffs.std))) +
+  scale_x_continuous(paste("Can 1 ", round(emSig$pct[1],1), "%", sep=""), limits=c(-0.75, 0.65)) +
+  scale_y_continuous(paste("Can 2 ", round(emSig$pct[2],1), "%", sep="")) +
+  theme(axis.text = element_text(size=16, color="black"),
+        axis.title = element_text(size=16, color="black"),
+        panel.background = element_rect(fill = "transparent"),
+        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
+        panel.grid.major = element_line(color="transparent"))
+## using only the significant terms, the six terms can account for ~80% of the 
+
 # all wines all terms
 em.man = manova(as.matrix(em.da[,-c(1:8)]) ~ (wine), data = em.da)
 summary(em.man, test="Wilks") ## note sig Wilks
 ## CVA
-em.cva = candisc(em.man)
+em.cva = candisc(sigMan)
 
 ### ggplot2 CVA plot #######
 ggplot(em.cva$means, aes(x=Can1, y=Can2, label=row.names(em.cva$means))) +
