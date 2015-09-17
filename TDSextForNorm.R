@@ -1,6 +1,6 @@
 ## function to extract parameters from TDS curves
 ## takes data from the tds.subset function and pulls out 
-##
+## 
 
 tdsExtNORM<- function(df, att, sigLine, ...){
   
@@ -21,7 +21,7 @@ tdsExtNORM<- function(df, att, sigLine, ...){
   df$dxCulu <- cumsum(df$dxSpline) # culumlitive sum of the dx
   
   df$dxSigLine <- unlist(lapply(1:nrow(df), FUN = function(i) #account for the sigLine
-    if(df$domRate[i] < sigLine) {return(0)} else {return(df$dxSpline[i] - sigLine)}))
+    if(df$dxSpline[i] < sigLine) {return(0)} else {return(df$dxSpline[i] - sigLine)}))
   
   df$dxSigCulu <- cumsum(df$dxSigLine)
   
