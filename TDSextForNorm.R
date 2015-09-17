@@ -2,7 +2,7 @@
 ## takes data from the tds.subset function and pulls out 
 ##
 
-tdsExt<- function(df, att, sigLine, ...){
+tdsExtNORM<- function(df, att, sigLine, ...){
   
   
   #df <- df[df$domRate >= sigLine & df$taste == att,] #subset for astringency
@@ -42,7 +42,7 @@ tdsExt<- function(df, att, sigLine, ...){
   #ddPe <- pe$time[nrow(pe)] - pe$time[1] #duration post Exp above sig line
 
   
-  ExtParm <- cbind(area,maxDom,tAmax,tmax,dur)
+  ExtParm <- data.frame(area,maxDom,tAmax,tmax,dur, row.names=1)
   print(list(intg = df, ExtParm = ExtParm, spFUN = sfx))
   
 }
