@@ -10,7 +10,7 @@ tdsExtNORM<- function(df, att, sigLine, ...){
   rownames(df) = 1:nrow(df)
   #df$Dom0 <- df$domRate - sigLine #subtract the sig line
   
-  #create spline function
+  #create spline function <<-- this can be done abunch of different wasys
   sfx <- splinefun(df$time, y=df$domRate, method = "natural")
   
   #integrate stepwise
@@ -20,7 +20,9 @@ tdsExtNORM<- function(df, att, sigLine, ...){
   
   df$dxCulu <- cumsum(df$dxSpline) # culumlitive sum of the dx
   
-  df$dxSigLine <- unlist(lapply(1:nrow(df), FUN = function(i) #account for the sigLine
+  # account for the sigLine by subtracting from the dxSpline integration, not the area of 1 sec under the 
+  # sigLine is the same valus as the sigLine  :-)
+  df$dxSigLine <- unlist(lapply(1:nrow(df), FUN = function(i) 
     if(df$dxSpline[i] < sigLine) {return(0)} else {return(df$dxSpline[i] - sigLine)}))
   
   df$dxSigCulu <- cumsum(df$dxSigLine)
