@@ -46,5 +46,5 @@ tdsExtNORM<- function(dat, att, sigLine, df, ...){
   
 }
 
-tdsExtNORM(test, att = "Bitter", sigLine = 0.297, df = 18)
+#tdsExtNORM(test, att = "Bitter", sigLine = 0.297, df = 18)
 
