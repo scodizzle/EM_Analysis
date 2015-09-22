@@ -115,7 +115,7 @@ summary(pptMan, test = "Wilks")
 
 pptCVA <- candisc(pptMan)
 # plot
-ggplot(pptCVA$means, aes(x=Can1, y=Can2, label=row.names(pptCVA$means))) +
+pptPlot <- ggplot(pptCVA$means, aes(x=Can1, y=Can2, label=row.names(pptCVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
   geom_segment(data=as.data.frame(pptCVA$coeffs.std), aes(x=0, y=0, xend=Can1*7, yend=Can2*7, label=row.names(pptCVA$coeffs.std)), 
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
