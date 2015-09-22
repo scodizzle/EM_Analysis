@@ -10,7 +10,7 @@ library(grid)
 library(splines)
 
 setwd("~/Dropbox/Frost_Research/Extended Macer Wines/EM_Analysis/")
-save(list=c("norm.ready", "normFrame.wine", "tdsNORMall", "tdsExtNORM"), file="tds.Rdata")
+save(list=c("norm.ready", "normFrame.wine", "tdsNORMall", "tdsExtNORM", "preplotTDS"), file="tds.Rdata")
 # norm.ready is by fermRep or bottle, there are 27 all normalized 
 # norFrame.wine is by treatment there are 9 all normalized
 # created from the code Greg wrote, under emNORMcode.R
@@ -83,10 +83,36 @@ summary.aov(Ast.lm)
 ##### 
 ##some plots
 
-ggplot(tdsNORMall[tdsNORMall$sensation == "Bitter",], aes(x=time, y=domRate)) +
-  geom_smooth(aes(color=wine), method="lm", formula= y~ns(x,18), se=FALSE, guide=TRUE)
-# the plot is busy...
 
+
+
+## TDS but facet the plot by wine
+## facet grid
+
+ggplot(tdsNORMall[tdsNORMall$sensation %in% c("Bitter", "Astringent", "Sweet", "Sour", "Hot"),], aes(x=time, y=domRate)) +
+         geom_smooth(method="lm", formula= y~ns(x,18), se=FALSE, guide=TRUE, color="black") +
+         geom_polygon(data = data.frame(x=c(0,100,100,0), y=c(0,0,0.297,0.297)), aes(x=x, y=y), alpha=0.1) +
+         facet_grid(wine~sensation) +
+         scale_x_continuous(breaks=c(50), name = "Normalized Time") +
+         scale_y_continuous(breaks=c(0.50), name = "Dominance Rate (%)") +
+         theme(axis.text = element_text(size=14), 
+               axis.title=element_text(size=16),
+               panel.background = element_rect(fill = "transparent"),
+               #panel.grid.major = element_line(colour = "black", size=0.75),
+               #panel.grid.minor = element_line(colour = "black", size=0.75),
+               panel.border = element_rect(linetype = "solid", colour = "black", fill=NA),
+               strip.text.y = element_text(colour = "black", size = 14),
+               legend.text = element_text(size = 13, color = "black"),
+               legend.title = element_text(size=13),
+               legend.key = element_rect(fill = "transparent"))
+  
+
+
+
+
+## create data for plotting...
+######################################################################################################
+######################################################################################################
 PD <- preplotTDS(rbind.data.frame(normFrame.wine$PD_A, normFrame.wine$PD_B, normFrame.wine$PD_C))
 PD$wine <- rep("PD", 600)
 PD$bottle <- rep()
@@ -125,3 +151,6 @@ S8$wine <- rep("S8", 600)
 row.names(S8) = 1:600
 tdsNORMall <- rbind.data.frame(PD, POC, SUB, PO1, PO2, PO4, PO6, PO8, S8)
 rm(PD, POC, SUB, PO1, PO2, PO4, PO6, PO8, S8)
+
+
+
