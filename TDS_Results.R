@@ -89,7 +89,7 @@ summary.aov(Ast.lm)
 ## TDS but facet the plot by wine
 ## facet grid
 
-ggplot(tdsNORMall[tdsNORMall$sensation %in% c("Bitter", "Astringent", "Sweet", "Sour", "Hot"),], aes(x=time, y=domRate)) +
+ggplot(tdsPD[tdsPD$sensation %in% c("Bitter", "Astringent", "Sweet", "Sour", "Hot"),], aes(x=time, y=domRate)) +
          geom_smooth(method="lm", formula= y~ns(x,18), se=FALSE, guide=TRUE, color="black") +
          geom_polygon(data = data.frame(x=c(0,100,100,0), y=c(0,0,0.297,0.297)), aes(x=x, y=y), alpha=0.1) +
          facet_grid(wine~sensation) +
@@ -117,6 +117,21 @@ PD <- preplotTDS(rbind.data.frame(normFrame.wine$PD_A, normFrame.wine$PD_B, norm
 PD$wine <- rep("PD", 600)
 PD$bottle <- rep()
 row.names(PD) = 1:600
+
+PDA <- preplotTDS(normFrame.wine$PD_A)
+PDA$wine <- rep("PDA", 600)
+row.names(PDA) = 1:600
+PDB <- preplotTDS(normFrame.wine$PD_B)
+PDB$wine <- rep("PDB", 600)
+row.names(PDB) = 1:600
+PDC <- preplotTDS(normFrame.wine$PD_C)
+PDC$wine <- rep("PDC", 600)
+row.names(PDC) = 1:600
+
+tdsPDA <- rbind.data.frame(PDA, PDB, PDC)
+
+
+
 
 POC <- preplotTDS(rbind.data.frame(normFrame.wine$POC_A, normFrame.wine$POC_B, normFrame.wine$POC_C))
 POC$wine <- rep("POC", 600) 
