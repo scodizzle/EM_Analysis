@@ -169,10 +169,10 @@ sigCVA = candisc(sigMan)
 ggplot(sigCVA$means, aes(x=Can1, y=Can2, label=row.names(sigCVA$means))) +
   geom_text(fontface="bold", size=7) +
   geom_segment(data=as.data.frame(sigCVA$coeffs.std), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(sigCVA$coeffs.std)), 
-               arrow=arrow(length=unit(0.3,"cm")), color="black", size=1) +
+               arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
   geom_text(data=as.data.frame(sigCVA$coeffs.std), aes(x=Can1, y=Can2, label=row.names(sigCVA$coeffs.std))) +
-  scale_x_continuous(paste("Can 1 ", round(sigCVA$pct[1],1), "%", sep=""), limits = c(-1,1)) +
-  scale_y_continuous(paste("Can 2 ", round(sigCVA$pct[2],1), "%", sep="")) +
+  scale_x_continuous(paste("Can 1 ", "(", round(sigCVA$pct[1],1), "%", ")", sep=""), limits = c(-1,1)) +
+  scale_y_continuous(paste("Can 2 ", "(", round(sigCVA$pct[2],1), "%", ")", sep="")) +
   theme(axis.text = element_text(size=16, color="black"),
         axis.title = element_text(size=16, color="black"),
         panel.background = element_rect(fill = "transparent"),
