@@ -12,7 +12,7 @@ library(plyr)
 
 da.mean <- aggregate(em.da[,-c(1:8)], by = list(em.da$wine), mean)
 ppt.mean <- aggregate(ppt[,c("TotalPhenol","Anthocyanin","Tannin","LPP","SPP")], by = list(ppt$wine), mean)
-
+vol.mean <- aggregate()
 
 
 
