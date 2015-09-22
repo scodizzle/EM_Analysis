@@ -166,7 +166,7 @@ sigMan <- manova(as.matrix(em.da[,c("RedFruit","PepperSpice","Aldehydic","Alcoho
 summary(sigMan, test="Wilks")
 # CVA and its plot
 sigCVA = candisc(sigMan)
-ggplot(sigCVA$means, aes(x=Can1, y=Can2, label=row.names(sigCVA$means))) +
+DAplot <- ggplot(sigCVA$means, aes(x=Can1, y=Can2, label=row.names(sigCVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
   geom_segment(data=as.data.frame(sigCVA$coeffs.std), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(sigCVA$coeffs.std)), 
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
@@ -180,7 +180,7 @@ ggplot(sigCVA$means, aes(x=Can1, y=Can2, label=row.names(sigCVA$means))) +
         panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
         panel.grid.major = element_line(color="transparent"))
 
-ggsave("font_ggplot.pdf", plot=p,  width=4, height=4)
+
 
 ## using only the significant terms, the six terms can account for 81.4% of the varability with the
 ## first two dinensions.  
