@@ -10,9 +10,19 @@ library(pls)
 library(SensoMineR)
 library(plyr)
 
+save(list = c("da.mean", "ppt.mean", "vol.mean", "wet.mean", "tds.mean"), file = "GPA_MFA.RData")
+load("GPA_MFA.RData")
+
 da.mean <- aggregate(em.da[,-c(1:8)], by = list(em.da$wine), mean)
+da.mean$Group.1 <- factor(da.mean$Group.1, levels = c("PD","PO1","PO2","PO4","PO6","PO8","POC","S8","SUB"))
+da.mean <- da.mean[order(da.mean$Group.1),]
 ppt.mean <- aggregate(ppt[,c("TotalPhenol","Anthocyanin","Tannin","LPP","SPP")], by = list(ppt$wine), mean)
-vol.mean <- aggregate()
+vol.mean <- aggregate(EMvol[,-c(1:9)], by = list(EMvol$wine), mean)
+wet.mean <- aggregate(wetChem[,-c(1:2)], by = list(wetChem$wine), mean)
+
+
+bitter.mean <- aggregate(Bitter[,-c(6:8)], by = list(Bitter$trt), mean)
+
 
 
 

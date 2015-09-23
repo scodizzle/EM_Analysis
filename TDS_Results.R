@@ -24,6 +24,7 @@ Bitter$wine <- names(emExt.Bitter)
 row.names(Bitter) = 1:27
 Bitter$trt <- unlist(lapply(1:27, FUN = function(i) strsplit(Bitter$wine, "_")[[i]][1]))
 Bitter$fermRep <- unlist(lapply(1:27, FUN = function(i) strsplit(Bitter$wine, "_")[[i]][2]))
+Bitter$sensation <- rep("Bitter", nrow(Bitter))
 Bitter.lm <- lm(as.matrix(Bitter[,c(1:5)]) ~ trt + fermRep, data = Bitter)
 summary.aov(Bitter.lm) 
 #area, maxDom, dur
@@ -38,12 +39,22 @@ Bitter.dur$groups[order(Bitter.dur$groups$trt),])
 colnames(Bitter.LSD) = c("trt1", "area", "gp1", "trt2", "MaxDom","gp2", "trt3", "dur", "gp3")
 Bitter.LSD
 
+cbind.data.frame(
+  Bitter.area$statistics[4],
+  Bitter.maxDom$statistics[4],
+  Bitter.dur$statistics[4])
+
+
+
+
+
 emExt.Hot<- lapply(norm.ready, tdsExtNORM, att="Hot", sigLine=0.297, df=18)
 Hot<- do.call(rbind.data.frame, lapply(1:27, function(i) emExt.Hot[[i]]$ExtParm))
 Hot$wine <- names(emExt.Hot)
 row.names(Hot) = 1:27
 Hot$trt <- unlist(lapply(1:27, FUN = function(i) strsplit(Hot$wine, "_")[[i]][1]))
 Hot$fermRep <- unlist(lapply(1:27, FUN = function(i) strsplit(Hot$wine, "_")[[i]][2]))
+Hot$sensation <- rep("Hot", nrow(Hot))
 Hot.lm <- lm(as.matrix(Hot[,c(1:5)]) ~ trt + fermRep, data = Hot)
 summary.aov(Hot.lm) 
 # No Sig for Hot
@@ -54,6 +65,7 @@ Sweet$wine <- names(emExt.Sweet)
 row.names(Sweet) = 1:27
 Sweet$trt <- unlist(lapply(1:27, FUN = function(i) strsplit(Sweet$wine, "_")[[i]][1]))
 Sweet$fermRep <- unlist(lapply(1:27, FUN = function(i) strsplit(Sweet$wine, "_")[[i]][2]))
+Sweet$sensation <- rep("Sweet", nrow(Sweet))
 Sweet.lm <- lm(as.matrix(Sweet[,c(1:5)]) ~ trt + fermRep, data = Sweet)
 summary.aov(Sweet.lm) 
 # No Sig for Sweet
@@ -65,6 +77,7 @@ Sour$wine <- names(emExt.Sour)
 row.names(Sour) = 1:27
 Sour$trt <- unlist(lapply(1:27, FUN = function(i) strsplit(Sour$wine, "_")[[i]][1]))
 Sour$fermRep <- unlist(lapply(1:27, FUN = function(i) strsplit(Sour$wine, "_")[[i]][2]))
+Sour$sensation <- rep("Sour", nrow(Sour))
 Sour.lm <- lm(as.matrix(Sour[,c(1:5)]) ~ trt + fermRep, data = Sour)
 summary.aov(Sour.lm) 
 # No significant difference for Sour
@@ -76,15 +89,52 @@ Ast$wine <- names(emExt.Ast)
 row.names(Ast) = 1:27
 Ast$trt <- unlist(lapply(1:27, FUN = function(i) strsplit(Ast$wine, "_")[[i]][1]))
 Ast$fermRep <- unlist(lapply(1:27, FUN = function(i) strsplit(Ast$wine, "_")[[i]][2]))
+Ast$sensation <- rep("Astringent", nrow(Ast))
 Ast.lm <- lm(as.matrix(Ast[,c(1:5)]) ~ trt + fermRep, data = Ast)
 summary.aov(Ast.lm) 
+
+## bind up a tds extracted parameter dataframe
+tdsAll <- rbind(Sweet, Sour, Hot, Bitter, Ast)
+tdsAll$wine <- factor(tdsAll$wine)
+tdsAll$trt <- factor(tdsAll$trt)
+tdsAll$sensation <- factor(tdsAll$sensation)
+tdsAll$fermRep <- factor(tdsAll$fermRep)
+
+# manova for all tds extracted paramters
+tds.m <- manova(as.matrix(tdsAll[,c(1:5)]) ~ trt, data = tdsAll)
+summary(tds.m, test="Wilks") # not significant
+
+# just bitter and Astringent
+tds.BA <- manova(as.matrix(tdsAll[tdsAll$sensation %in% c("Bitter","Astringent"),][,c(1:5)]) ~ trt, 
+                 data = tdsAll[tdsAll$sensation %in% c("Bitter","Astringent"),])
+summary(tds.BA, test="Wilks") # significant
+
+tdsCVA <- candisc(tds.BA)
+plot(tdsCVA)
+
+# just the significant bitter terms
+tds.b <- manova(as.matrix(tdsAll[tdsAll$sensation == "Bitter",][,c("area","maxDom","dur")]) ~ trt, 
+                data = tdsAll[tdsAll$sensation == "Bitter",]) 
+tds.b.CVA <- candisc(tds.b)
+plot(tds.b.CVA)
+# CVA plot of the bitter significant terms
+ggplot(tds.b.CVA$means, aes(x=Can1, y=Can2, label=row.names(tds.b.CVA$means))) +
+  geom_text(family = "Times New Roman", fontface="bold", size=7) +
+  geom_segment(data=as.data.frame(tds.b.CVA$coeffs.std), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(tds.b.CVA$coeffs.std)), 
+               arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
+  geom_text(data=as.data.frame(tds.b.CVA$coeffs.std), 
+            aes(x=Can1, y=Can2, label=row.names(tds.b.CVA$coeffs.std)), family = "Times New Roman", fontface = "italic") +
+  scale_x_continuous(paste("Can 1 ", "(", round(tds.b.CVA$pct[1],1), "%", ")", sep=""), limits = c(-27,20)) +
+  scale_y_continuous(paste("Can 2 ", "(", round(tds.b.CVA$pct[2],1), "%", ")", sep="")) +
+  theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
+        axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
+        panel.background = element_rect(fill = "transparent"),
+        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
+        panel.grid.major = element_line(color="transparent"))
 
 
 ##### 
 ##some plots
-
-
-
 
 ## TDS but facet the plot by wine
 ## facet grid

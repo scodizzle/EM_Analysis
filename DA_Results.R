@@ -165,7 +165,7 @@ sigMan <- manova(as.matrix(em.da[,c("RedFruit","PepperSpice","Aldehydic","Alcoho
                  ~ wine, data=em.da)
 summary(sigMan, test="Wilks")
 # CVA and its plot
-sigCVA = candisc(sigMan)
+sigCVA <- candisc(sigMan)
 DAplot <- ggplot(sigCVA$means, aes(x=Can1, y=Can2, label=row.names(sigCVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
   geom_segment(data=as.data.frame(sigCVA$coeffs.std), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(sigCVA$coeffs.std)), 

@@ -12,7 +12,7 @@ library(grid)
 library(reshape2)
 
 save(list = c("EMvol"), file = "EMvol.Rdata")
-
+load("EMvol.Rdata")
 # Boxplots of the various scaling methods
 boxplot(EMvol[,-c(1:9)])
 #boxplot(scale(EMvol[,-c(1:9)]))
