@@ -9,8 +9,9 @@ library(grid)
 
 
 setwd("~/Dropbox/Frost_Research/Extended Macer Wines/EM_Analysis")
+save(list = c("em.da", "daPlot"), file = "EMdata.Rdata")
 load("EMdata.Rdata")
-save(list = c("em.da", "ppt", "stat_sum_single"), file = "EMdata.Rdata")
+
 
 ############################################################################################
 ## ANOVA of the DA ##
@@ -166,13 +167,14 @@ sigMan <- manova(as.matrix(em.da[,c("RedFruit","PepperSpice","Aldehydic","Alcoho
 summary(sigMan, test="Wilks")
 # CVA and its plot
 sigCVA <- candisc(sigMan)
-DAplot <- ggplot(sigCVA$means, aes(x=Can1, y=Can2, label=row.names(sigCVA$means))) +
+plot(sigCVA)
+daPlot <- ggplot(sigCVA$means, aes(x=Can1, y=Can2, label=row.names(sigCVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
-  geom_segment(data=as.data.frame(sigCVA$coeffs.std), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(sigCVA$coeffs.std)), 
+  geom_segment(data=as.data.frame(sigCVA$structure), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(sigCVA$structure)), 
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
-  geom_text(data=as.data.frame(sigCVA$coeffs.std), 
-            aes(x=Can1, y=Can2, label=row.names(sigCVA$coeffs.std)), family = "Times New Roman", fontface = "italic") +
-  scale_x_continuous(paste("Can 1 ", "(", round(sigCVA$pct[1],1), "%", ")", sep=""), limits = c(-1,1)) +
+  geom_text(data=as.data.frame(sigCVA$structure), 
+            aes(x=Can1, y=Can2, label=row.names(sigCVA$structure)), family = "Times New Roman", fontface = "italic") +
+  scale_x_continuous(paste("Can 1 ", "(", round(sigCVA$pct[1],1), "%", ")", sep=""), limits = c(-.75,.75)) +
   scale_y_continuous(paste("Can 2 ", "(", round(sigCVA$pct[2],1), "%", ")", sep="")) +
   theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
         axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
