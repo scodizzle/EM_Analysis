@@ -1,10 +1,11 @@
 #####  wet chemistry  
 
-save(list = c(""), file = "wetChem.Rdata")
+save(list = c("wetChem", "pptPlot"), file = "wetChem.Rdata")
 # import wet chem data
 wetChem <- read.csv("WetChem.csv", header = TRUE)
 str(wetChem)
 
+load("wetChem.Rdata")
 # ANOVA
 wc.lm <- lm(as.matrix(wetChem[,-c(1:2)]) ~ wine + fermRep, data=wetChem)
 summary.aov(wc.lm)
@@ -30,20 +31,21 @@ cbind(
   EtOH$statistics[4]
 )
 
-## manova
-wc.man <- manova(as.matrix(wetChem[,-c(1,2,4)]) ~ wine, data=wetChem)
+## manova on the scaled dataset
+wetChemScale <- cbind(wetChem[,c(1,2)], scale(wetChem[,c(3:8)]))
+wc.man <- manova(as.matrix(wetChemScale[,-c(1,2,5)]) ~ wine, data=wetChemScale)
 summary(wc.man, test="Wilks")
 
 ## CVA 
 wcCVA <- candisc(wc.man, scale=TRUE)
 plot(wcCVA)
 ## CVA plot
-ggplot(wcCVA$means, aes(x=Can1, y=Can2, label=row.names(wcCVA$means))) +
+pptPlot <- ggplot(wcCVA$means, aes(x=Can1, y=Can2, label=row.names(wcCVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
-  geom_segment(data=as.data.frame(wcCVA$coeffs.std), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(wcCVA$coeffs.std)), 
+  geom_segment(data=as.data.frame(wcCVA$structure), aes(x=0, y=0, xend=Can1*5, yend=Can2*5, label=row.names(wcCVA$structure)), 
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
-  geom_text(data=as.data.frame(wcCVA$coeffs.std), 
-            aes(x=Can1, y=Can2, label=row.names(wcCVA$coeffs.std)), family = "Times New Roman", fontface = "italic") +
+  geom_text(data=as.data.frame(wcCVA$structure), 
+            aes(x=Can1*5, y=Can2*5, label=row.names(wcCVA$structure)), family = "Times New Roman", fontface = "italic") +
   scale_x_continuous(paste("Can 1 ", "(", round(wcCVA$pct[1],1), "%", ")", sep="")) +
   scale_y_continuous(paste("Can 2 ", "(", round(wcCVA$pct[2],1), "%", ")", sep="")) +
   theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),

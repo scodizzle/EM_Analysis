@@ -10,14 +10,15 @@ library(grid)
 library(splines)
 
 setwd("~/Dropbox/Frost_Research/Extended Macer Wines/EM_Analysis/")
-save(list=c("norm.ready", "normFrame.wine", "tdsNORMall", "tdsExtNORM", "preplotTDS"), file="tds.Rdata")
+save(list=c("norm.ready", "normFrame.wine", "tdsNORMall", "tdsExtNORM", "preplotTDS", "tdsAll", "tdsAll.t"), file="tds.Rdata")
 # norm.ready is by fermRep or bottle, there are 27 all normalized 
 # norFrame.wine is by treatment there are 9 all normalized
 # created from the code Greg wrote, under emNORMcode.R
 # the function tdsEXTNORM -- extractes curve parameters for ANOVA and other evalation....  
 load("tds.Rdata")
 
-# extract curve parameters using the tdsExtNORM f(X)  
+# extract curve parameters using the tdsExtNORM f(X) 
+## Bitter
 emExt.Bitter<- lapply(norm.ready, tdsExtNORM, att="Bitter", sigLine=0.297, df=18)
 Bitter <- do.call(rbind.data.frame, lapply(1:27, function(i) emExt.Bitter[[i]]$ExtParm))
 Bitter$wine <- names(emExt.Bitter)
@@ -45,9 +46,7 @@ cbind.data.frame(
   Bitter.dur$statistics[4])
 
 
-
-
-
+## HOT
 emExt.Hot<- lapply(norm.ready, tdsExtNORM, att="Hot", sigLine=0.297, df=18)
 Hot<- do.call(rbind.data.frame, lapply(1:27, function(i) emExt.Hot[[i]]$ExtParm))
 Hot$wine <- names(emExt.Hot)
@@ -59,6 +58,7 @@ Hot.lm <- lm(as.matrix(Hot[,c(1:5)]) ~ trt + fermRep, data = Hot)
 summary.aov(Hot.lm) 
 # No Sig for Hot
 
+## Sweet
 emExt.Sweet<- lapply(norm.ready, tdsExtNORM, att="Sweet", sigLine=0.297, df=18)
 Sweet <- do.call(rbind.data.frame, lapply(1:27, function(i) emExt.Sweet[[i]]$ExtParm))
 Sweet$wine <- names(emExt.Sweet)
@@ -70,7 +70,7 @@ Sweet.lm <- lm(as.matrix(Sweet[,c(1:5)]) ~ trt + fermRep, data = Sweet)
 summary.aov(Sweet.lm) 
 # No Sig for Sweet
 
-
+## Sour
 emExt.Sour<- lapply(norm.ready, tdsExtNORM, att="Sour", sigLine=0.297, df=18)
 Sour <- do.call(rbind.data.frame, lapply(1:27, function(i) emExt.Sour[[i]]$ExtParm))
 Sour$wine <- names(emExt.Sour)
@@ -82,7 +82,7 @@ Sour.lm <- lm(as.matrix(Sour[,c(1:5)]) ~ trt + fermRep, data = Sour)
 summary.aov(Sour.lm) 
 # No significant difference for Sour
 
-
+## Astringent
 emExt.Ast<- lapply(norm.ready, tdsExtNORM, att="Astringent", sigLine=0.297, df=18)
 Ast <- do.call(rbind.data.frame, lapply(1:27, function(i) emExt.Ast[[i]]$ExtParm))
 Ast$wine <- names(emExt.Ast)
@@ -92,39 +92,49 @@ Ast$fermRep <- unlist(lapply(1:27, FUN = function(i) strsplit(Ast$wine, "_")[[i]
 Ast$sensation <- rep("Astringent", nrow(Ast))
 Ast.lm <- lm(as.matrix(Ast[,c(1:5)]) ~ trt + fermRep, data = Ast)
 summary.aov(Ast.lm) 
+# No significant difference for Astringent
 
-## bind up a tds extracted parameter dataframe
+## bind up a tds ALL extracted parameter dataframe ##
 tdsAll <- rbind(Sweet, Sour, Hot, Bitter, Ast)
 tdsAll$wine <- factor(tdsAll$wine)
 tdsAll$trt <- factor(tdsAll$trt)
 tdsAll$sensation <- factor(tdsAll$sensation)
 tdsAll$fermRep <- factor(tdsAll$fermRep)
 
+## this approach of nesting the sensation w/in the fermRep...  
+summary.aov(lm(as.matrix(tdsAll[,c(1:5)]) ~ trt + fermRep + fermRep/sensation, data=tdsAll))
+summary.aov(lm(as.matrix(tdsAll.t[,-c(1:3)]) ~ trt + fermRep, data=tdsAll.t))
+
+#####
+summary(manova(as.matrix(tdsAll.t[,-c(1:3)]) ~ trt + fermRep, data = tdsAll.t), test="Wilks")
+
 # manova for all tds extracted paramters
-tds.m <- manova(as.matrix(tdsAll[,c(1:5)]) ~ trt, data = tdsAll)
+tds.m <- manova(as.matrix(tdsAll[,c(1:5)]) ~ trt + sensation, data = tdsAll)
 summary(tds.m, test="Wilks") # not significant
 
 # just bitter and Astringent
-tds.BA <- manova(as.matrix(tdsAll[tdsAll$sensation %in% c("Bitter","Astringent"),][,c(1:5)]) ~ trt, 
+tds.BA <- manova(as.matrix(tdsAll[tdsAll$sensation %in% c("Bitter","Astringent"),][,c(1:5)]) ~ trt + fermRep + fermRep/sensation, 
                  data = tdsAll[tdsAll$sensation %in% c("Bitter","Astringent"),])
 summary(tds.BA, test="Wilks") # significant
-
+# bitter and astringent together are sig on Wilks, 
+# make a CVA plot
 tdsCVA <- candisc(tds.BA)
 plot(tdsCVA)
 
 # just the significant bitter terms
 tds.b <- manova(as.matrix(tdsAll[tdsAll$sensation == "Bitter",][,c("area","maxDom","dur")]) ~ trt, 
                 data = tdsAll[tdsAll$sensation == "Bitter",]) 
+summary(tds.b, test = "Wilks") # significant for only Wilks 
 tds.b.CVA <- candisc(tds.b)
 plot(tds.b.CVA)
 # CVA plot of the bitter significant terms
 ggplot(tds.b.CVA$means, aes(x=Can1, y=Can2, label=row.names(tds.b.CVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
-  geom_segment(data=as.data.frame(tds.b.CVA$coeffs.std), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(tds.b.CVA$coeffs.std)), 
+  geom_segment(data=as.data.frame(tds.b.CVA$structure), aes(x=0, y=0, xend=Can1*2, yend=Can2*2, label=row.names(tds.b.CVA$structure)), 
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
-  geom_text(data=as.data.frame(tds.b.CVA$coeffs.std), 
-            aes(x=Can1, y=Can2, label=row.names(tds.b.CVA$coeffs.std)), family = "Times New Roman", fontface = "italic") +
-  scale_x_continuous(paste("Can 1 ", "(", round(tds.b.CVA$pct[1],1), "%", ")", sep=""), limits = c(-27,20)) +
+  geom_text(data=as.data.frame(tds.b.CVA$structure), 
+            aes(x=Can1*2, y=Can2*2, label=row.names(tds.b.CVA$structure)), family = "Times New Roman", fontface = "italic") +
+  scale_x_continuous(paste("Can 1 ", "(", round(tds.b.CVA$pct[1],1), "%", ")", sep="")) +
   scale_y_continuous(paste("Can 2 ", "(", round(tds.b.CVA$pct[2],1), "%", ")", sep="")) +
   theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
         axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
@@ -134,8 +144,7 @@ ggplot(tds.b.CVA$means, aes(x=Can1, y=Can2, label=row.names(tds.b.CVA$means))) +
 
 
 ##### 
-##some plots
-
+## some aditional plots
 ## TDS but facet the plot by wine
 ## facet grid
 

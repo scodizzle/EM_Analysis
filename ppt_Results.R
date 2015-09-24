@@ -3,6 +3,9 @@
 ##  start whit the nested ANOVA
 ## 
 
+save(list = c("ppt","pptPlot"), file = "EMppt.RData")
+load("EMppt.RData")
+
 ppt.lm = lm(as.matrix(ppt[,c("TotalPhenol", "Anthocyanin", "SPP.Au", "LPP.Au", "SPP.LPP.Au", "Tannin", "NTP")]) 
             ~ wine + wine/fermRep, data=ppt) 
 
@@ -114,14 +117,15 @@ pptMan <- manova(as.matrix(ppt[,c("TotalPhenol", "Anthocyanin", "SPP", "LPP", "T
 summary(pptMan, test = "Wilks")
 
 pptCVA <- candisc(pptMan)
+plot(pptCVA)
 # plot
 pptPlot <- ggplot(pptCVA$means, aes(x=Can1, y=Can2, label=row.names(pptCVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
-  geom_segment(data=as.data.frame(pptCVA$coeffs.std), aes(x=0, y=0, xend=Can1*7, yend=Can2*7, label=row.names(pptCVA$coeffs.std)), 
+  geom_segment(data=as.data.frame(pptCVA$structure), aes(x=0, y=0, xend=Can1*7, yend=Can2*7, label=row.names(pptCVA$structure)), 
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
-  geom_text(data=as.data.frame(pptCVA$coeffs.std), 
-            aes(x=Can1*7, y=Can2*7, label=row.names(pptCVA$coeffs.std)), family = "Times New Roman", fontface = "italic") +
-  scale_x_continuous(paste("Can 1 ", "(", round(pptCVA$pct[1],1), "%", ")", sep="")) +
+  geom_text(data=as.data.frame(pptCVA$structure), 
+            aes(x=Can1*7, y=Can2*7, label=row.names(pptCVA$structure)), family = "Times New Roman", fontface = "italic") +
+  scale_x_continuous(paste("Can 1 ", "(", round(pptCVA$pct[1],1), "%", ")", sep=""), limits = c(-12,12)) +
   scale_y_continuous(paste("Can 2 ", "(", round(pptCVA$pct[2],1), "%", ")", sep="")) +
   theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
         axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
