@@ -11,7 +11,7 @@ library(candisc)
 library(grid)
 library(reshape2)
 
-save(list = c("EMvol", "volPlot"), file = "EMvol.Rdata")
+save(list = c("EMvol","volCVA", "volPlot"), file = "EMvol.Rdata")
 load("EMvol.Rdata")
 # Boxplots of the various scaling methods
 boxplot(EMvol[,-c(1:9)])
@@ -44,7 +44,7 @@ write.csv(cc.lsd, file="lsd.csv")
 volSig <- ScaleVol[,-which(names(ScaleVol) %in% c("ethyl.decanoate", "vitispirane.I.and.II"))]
 
 # CVA of the significant measurments
-volMan <- manova(as.matrix(volSig[,-c(1:9)]) ~ wine + wine/fermRep, data = volSig)
+volMan <- manova(as.matrix(volSig[,-c(1:9)]) ~ wine, data = volSig)
 summary(volMan, test = "Wilks")
 volCVA <- candisc(volMan, scale=FALSE)
 plot(volCVA)
@@ -52,11 +52,11 @@ plot(volCVA)
 # CVA Plot
 volPlot <- ggplot(volCVA$means, aes(x=Can1, y=Can2, label=row.names(volCVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
-  geom_segment(data=as.data.frame(volCVA$structure), aes(x=0, y=0, xend=Can1*60, yend=Can2*60, label=row.names(volCVA$structure)), 
+  geom_segment(data=as.data.frame(volCVA$structure), aes(x=0, y=0, xend=Can1*15.5, yend=Can2*15.5, label=row.names(volCVA$structure)), 
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
   geom_text(data=as.data.frame(volCVA$structure), 
-            aes(x=Can1*60, y=Can2*60, label=row.names(volCVA$structure)), family = "Times New Roman", fontface = "italic") +
-  scale_x_continuous(paste("Can 1 ", "(", round(volCVA$pct[1],1), "%", ")", sep=""), limits = c(-65, 65)) +
+            aes(x=Can1*15.5, y=Can2*15.5, label=row.names(volCVA$structure)), family = "Times New Roman", fontface = "italic") +
+  scale_x_continuous(paste("Can 1 ", "(", round(volCVA$pct[1],1), "%", ")", sep=""), limits = c(-18,18)) +
   scale_y_continuous(paste("Can 2 ", "(", round(volCVA$pct[2],1), "%", ")", sep="")) +
   theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
         axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
