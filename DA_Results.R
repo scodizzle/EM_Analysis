@@ -9,7 +9,7 @@ library(grid)
 
 
 setwd("~/Dropbox/Frost_Research/Extended Macer Wines/EM_Analysis")
-save(list = c("em.da", "daPlot"), file = "EMdata.Rdata")
+save(list = c("em.da", "sigCVA", "daPlot"), file = "EMdata.Rdata")
 load("EMdata.Rdata")
 
 
@@ -181,7 +181,7 @@ daPlot <- ggplot(sigCVA$means, aes(x=Can1, y=Can2, label=row.names(sigCVA$means)
         panel.background = element_rect(fill = "transparent"),
         panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
         panel.grid.major = element_line(color="transparent"))
-
+daPlot
 
 
 ## using only the significant terms, the six terms can account for 81.4% of the varability with the
