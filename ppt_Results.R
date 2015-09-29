@@ -3,11 +3,11 @@
 ##  start whit the nested ANOVA
 ## 
 
-save(list = c("ppt","pptPlot"), file = "EMppt.RData")
+save(list = c("ppt","pptCVA", "pptPlot"), file = "EMppt.RData")
 load("EMppt.RData")
 
 ppt.lm = lm(as.matrix(ppt[,c("TotalPhenol", "Anthocyanin", "SPP.Au", "LPP.Au", "SPP.LPP.Au", "Tannin", "NTP")]) 
-            ~ wine + wine/fermRep, data=ppt) 
+                        ~ wine + wine/fermRep, data=ppt) 
 
 ## the nested ANOVA will give a samller LSD....  
 #Total Phenol
@@ -132,7 +132,7 @@ pptPlot <- ggplot(pptCVA$means, aes(x=Can1, y=Can2, label=row.names(pptCVA$means
         panel.background = element_rect(fill = "transparent"),
         panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
         panel.grid.major = element_line(color="transparent"))
-
+pptPlot
 # scree plot and % explained
 pptCVA$pct
 sum(pptCVA$pct[1:2])
