@@ -1,6 +1,6 @@
 #####  wet chemistry  
 
-save(list = c("wetChem", "pptPlot"), file = "wetChem.Rdata")
+save(list = c("wetChem","wcCVA", "pptPlot"), file = "wetChem.Rdata")
 # import wet chem data
 wetChem <- read.csv("WetChem.csv", header = TRUE)
 str(wetChem)
@@ -46,10 +46,11 @@ pptPlot <- ggplot(wcCVA$means, aes(x=Can1, y=Can2, label=row.names(wcCVA$means))
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
   geom_text(data=as.data.frame(wcCVA$structure), 
             aes(x=Can1*5, y=Can2*5, label=row.names(wcCVA$structure)), family = "Times New Roman", fontface = "italic") +
-  scale_x_continuous(paste("Can 1 ", "(", round(wcCVA$pct[1],1), "%", ")", sep="")) +
+  scale_x_continuous(paste("Can 1 ", "(", round(wcCVA$pct[1],1), "%", ")", sep=""), limits=c(-7,7)) +
   scale_y_continuous(paste("Can 2 ", "(", round(wcCVA$pct[2],1), "%", ")", sep="")) +
   theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
         axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
         panel.background = element_rect(fill = "transparent"),
         panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
         panel.grid.major = element_line(color="transparent"))
+pptPlot
