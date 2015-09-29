@@ -239,6 +239,26 @@ ggplot(tdsNORMall[tdsNORMall$sensation %in% c("Bitter", "Astringent", "Sweet", "
                legend.text = element_text(size = 13, color = "black"),
                legend.title = element_text(size=13),
                legend.key = element_rect(fill = "transparent"))
+
+## TDS by the wines 
+ggplot(tdsNORMall[tdsNORMall$sensation %in% c("Bitter", "Astringent", "Sweet", "Sour", "Hot"),], 
+       aes(x=time, y=domRate)) +
+  geom_smooth(aes(linetype=sensation), method="lm", formula= y~ns(x,5), se=FALSE, guide=TRUE, color="black") +
+  geom_polygon(data = data.frame(x=c(0,100,100,0), y=c(0,0,0.297,0.297)), aes(x=x, y=y), alpha=0.1) +
+  facet_grid(~wine) +
+  scale_x_continuous(breaks=c(50), name = "Normalized Time") +
+  scale_y_continuous(breaks=c(0.50), name = "Dominance Rate (%)") +
+  scale_linetype_manual(name="Sensation", breaks=c("Astringent", "Bitter", "Hot", "Sweet", "Sour"),
+                        values = c(1,2,3,4,5)) +
+  theme(axis.text = element_text(size=14, color="black", family = "Times New Roman"), 
+        axis.title=element_text(size=16, color="black", family = "Times New Roman"),
+        panel.background = element_rect(fill = "transparent"),
+        panel.border = element_rect(linetype = "solid", colour = "black", fill=NA),
+        strip.text.x = element_text(size = 14, color="black", face = "bold.italic", family = "Times New Roman"),
+        legend.text = element_text(size = 13, color = "black", face="italic", family = "Times New Roman"),
+        legend.title = element_text(size=13, color = "black", face = "bold", family = "Times New Roman"),
+        legend.key = element_rect(fill = "transparent"),
+        legend.position = "bottom")
   
 
 
