@@ -44,20 +44,25 @@ plot.GPA(gpaSig, choix = "ind", habillage="group", partial="all", title="Multipl
 lapply(list(sigCVA$means,pptCVA$means,volCVA$means,wcCVA$means,tdsBA.CVA$means), dim)
 ## all the dimns
 mfaCVA <- MFA(cbind(sigCVA$means,pptCVA$means,volCVA$means,wcCVA$means,tdsBA.CVA$means), group=c(7,5,8,5,5),
-              name.group=c("da","ppt","vol","wet","tds"))
+              name.group=c("da","ppt","vol","wet","tds"), graph = FALSE)
 plot.MFA(mfaCVA, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
 ## just 3 dims...  
 mfaCVA.3 <- MFA(cbind(sigCVA$means[,1:3],pptCVA$means[,1:3],volCVA$means[,1:3],wcCVA$means[,1:3],tdsBA.CVA$means[,1:3]), 
-                group=c(3,3,3,3,3),name.group=c("da","ppt","vol","wet","tds"))
+                group=c(3,3,3,3,3),name.group=c("da","ppt","vol","wet","tds"), graph=FALSE)
 plot.MFA(mfaCVA.3, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
 ## significant dims.. 
 mfaCVA.sig <- MFA(cbind(sigCVA$means[,1:2],pptCVA$means[,1:5],volCVA$means[,1:8],wcCVA$means[,1:2],tdsBA.CVA$means[,1]), 
-                group=c(2,5,8,2,1),name.group=c("da","ppt","vol","wet","tds"))
+                group=c(2,5,8,2,1),name.group=c("da","ppt","vol","wet","tds"), graph = FALSE)
 plot.MFA(mfaCVA.sig, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
 ## using the second tds CVA tdsSigCVA
 mfaCVA.sig2 <- MFA(cbind(sigCVA$means[,1:2],pptCVA$means[,1:5],volCVA$means[,1:8],wcCVA$means[,1:2],tdsSigCVA$means[,1:2]), 
-                  group=c(2,5,8,2,2),name.group=c("da","ppt","vol","wet","tds"))
+                  group=c(2,5,8,2,2),name.group=c("da","ppt","vol","wet","tds"), graph = FALSE)
 plot.MFA(mfaCVA.sig2, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
+
+#########
+## GPA
+gpaCVA <- GPA(cbind(sigCVA$means,pptCVA$means,volCVA$means,wcCVA$means,tdsBA.CVA$means), group=c(7,5,8,5,5),
+              name.group=c("da","ppt","vol","wet","tds"), graph = FALSE)
 
 ##############################################################################################################
 ##############################################################################################################
