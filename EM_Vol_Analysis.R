@@ -35,10 +35,10 @@ bb.lsd <- lapply(1:29, FUN = function(i) {bb[[i]]$groups[order(bb[[i]]$groups$tr
 names(bb.lsd) = colnames(ScaleVol)[10:38]
 
 cc <- do.call(cbind, lapply(1:29, FUN= function(i) bb.lsd[[i]]))
-write.csv(cc, file="Vol_LSD.csv")
+#write.csv(cc, file="Vol_LSD.csv")
 
 cc.lsd <- do.call(cbind, lapply(1:29, FUN=function(i) bb[[i]]$statistics[4]))
-write.csv(cc.lsd, file="lsd.csv")
+#write.csv(cc.lsd, file="lsd.csv")
 
 # drop ethyl.decanoate & vitispirane.I.and.II
 volSig <- ScaleVol[,-which(names(ScaleVol) %in% c("ethyl.decanoate", "vitispirane.I.and.II"))]

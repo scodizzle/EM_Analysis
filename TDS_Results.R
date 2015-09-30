@@ -150,10 +150,10 @@ tdsBA.CVA <- candisc(tds.BA)
 ## tdsSig
 ggplot(tdsSigCVA$means, aes(x=Can1, y=Can2, label=row.names(tdsSigCVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
-  geom_segment(data=as.data.frame(tdsSigCVA$structure), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(tdsSigCVA$structure)), 
+  geom_segment(data=as.data.frame(tdsSigCVA$structure), aes(x=0, y=0, xend=Can1*2, yend=Can2*2, label=row.names(tdsSigCVA$structure)), 
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
   geom_text(data=as.data.frame(tdsSigCVA$structure), 
-            aes(x=Can1, y=Can2, label=row.names(tdsSigCVA$structure)), family = "Times New Roman", fontface = "italic") +
+            aes(x=Can1*2, y=Can2*2, label=row.names(tdsSigCVA$structure)), family = "Times New Roman", fontface = "italic") +
   scale_x_continuous(paste("Can 1 ", "(", round(tdsSigCVA$pct[1],1), "%", ")", sep="")) +
   scale_y_continuous(paste("Can 2 ", "(", round(tdsSigCVA$pct[2],1), "%", ")", sep="")) +
   theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
@@ -164,10 +164,10 @@ ggplot(tdsSigCVA$means, aes(x=Can1, y=Can2, label=row.names(tdsSigCVA$means))) +
 ## tdsBA.CVA
 ggplot(tdsBA.CVA$means, aes(x=Can1, y=Can2, label=row.names(tdsBA.CVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
-  geom_segment(data=as.data.frame(tdsBA.CVA$structure), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(tdsBA.CVA$structure)), 
+  geom_segment(data=as.data.frame(tdsBA.CVA$structure), aes(x=0, y=0, xend=Can1*3, yend=Can2*3, label=row.names(tdsBA.CVA$structure)), 
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
   geom_text(data=as.data.frame(tdsBA.CVA$structure), 
-            aes(x=Can1, y=Can2, label=row.names(tdsBA.CVA$structure)), family = "Times New Roman", fontface = "italic") +
+            aes(x=Can1*3, y=Can2*3, label=row.names(tdsBA.CVA$structure)), family = "Times New Roman", fontface = "italic") +
   scale_x_continuous(paste("Can 1 ", "(", round(tdsBA.CVA$pct[1],1), "%", ")", sep="")) +
   scale_y_continuous(paste("Can 2 ", "(", round(tdsBA.CVA$pct[2],1), "%", ")", sep="")) +
   theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),

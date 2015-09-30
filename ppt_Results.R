@@ -6,6 +6,8 @@
 save(list = c("ppt","pptCVA", "pptPlot"), file = "EMppt.RData")
 load("EMppt.RData")
 
+boxplot(ppt[,c("TotalPhenol", "Anthocyanin", "SPP.Au", "LPP.Au", "SPP.LPP.Au", "Tannin", "NTP")])
+
 ppt.lm = lm(as.matrix(ppt[,c("TotalPhenol", "Anthocyanin", "SPP.Au", "LPP.Au", "SPP.LPP.Au", "Tannin", "NTP")]) 
                         ~ wine + wine/fermRep, data=ppt) 
 
@@ -111,6 +113,8 @@ ppt$SPP = log(ppt$SPP.Au)
 pptScale = scale(ppt[,c("TotalPhenol","Anthocyanin", "SPP", "LPP", "Tannin") ], center=TRUE)
 # form up the dataset to use
 pptScale = data.frame(wine = ppt$wine, pptScale)
+
+boxplot(pptScale[,-1])
 
 pptMan <- manova(as.matrix(ppt[,c("TotalPhenol", "Anthocyanin", "SPP", "LPP", "Tannin")])
                ~ wine, data=pptScale)
