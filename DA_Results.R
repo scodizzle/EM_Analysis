@@ -168,7 +168,8 @@ summary(sigMan, test="Wilks")
 # CVA and its plot
 sigCVA <- candisc(sigMan)
 plot(sigCVA)
-daPlot <- ggplot(sigCVA$means, aes(x=Can1, y=Can2, label=row.names(sigCVA$means))) +
+daPlot <- 
+  ggplot(sigCVA$means, aes(x=Can1, y=Can2, label=row.names(sigCVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
   geom_segment(data=as.data.frame(sigCVA$structure), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(sigCVA$structure)), 
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
