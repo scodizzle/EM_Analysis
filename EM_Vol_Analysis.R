@@ -23,6 +23,7 @@ boxplot(EMvol[,-c(1:9)])
 ScaleVol <- cbind(EMvol[,1:9], scale(EMvol[,-c(1:9)], center = TRUE)) #mean centerscale the vol data
 
 #####  ANOVA of the scaled DATA  #####
+summary(manova(as.matrix(ScaleVol[,-c(1:9)]) ~ wine + wine/fermRep, data = ScaleVol), test="Wilks") #significant
 vol.lm <- lm(as.matrix(ScaleVol[,-c(1:9)]) ~ wine + wine/fermRep, data = ScaleVol)
 summary.aov(vol.lm)
 # All significant but ethyl.decanoate  vitispirane.I.and.II
@@ -50,7 +51,8 @@ volCVA <- candisc(volMan, scale=FALSE)
 plot(volCVA)
 
 # CVA Plot
-volPlot <- ggplot(volCVA$means, aes(x=Can1, y=Can2, label=row.names(volCVA$means))) +
+volPlot <- 
+  ggplot(volCVA$means, aes(x=Can1, y=Can2, label=row.names(volCVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
   geom_segment(data=as.data.frame(volCVA$structure), aes(x=0, y=0, xend=Can1*15.5, yend=Can2*15.5, label=row.names(volCVA$structure)), 
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
