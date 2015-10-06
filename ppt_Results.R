@@ -112,15 +112,17 @@ ppt$SPP = log(ppt$SPP.Au)
 # scale everything!
 pptScale = scale(ppt[,c("TotalPhenol","Anthocyanin", "SPP", "LPP", "Tannin") ], center=TRUE)
 # form up the dataset to use
-pptScale = data.frame(wine = ppt$wine, pptScale)
+pptScale = data.frame(wine = ppt$wine, fermRep = ppt$fermRep, instRep = ppt$instRep, pptScale)
 
-boxplot(pptScale[,-1])
+boxplot(pptScale[,-c(1:3)])
+summary(manova(as.matrix(ppt[,c("TotalPhenol", "Anthocyanin", "SPP", "LPP", "Tannin")])
+               ~ wine + wine/fermRep + instRep, data=pptScale), test="Wilks")
 
 pptMan <- manova(as.matrix(ppt[,c("TotalPhenol", "Anthocyanin", "SPP", "LPP", "Tannin")])
                ~ wine, data=pptScale)
 summary(pptMan, test = "Wilks")
 
-pptCVA <- candisc(pptMan)
+pptCVA <- candisc(pptMan, scale=FALSE)
 plot(pptCVA)
 # plot
 pptPlot <- ggplot(pptCVA$means, aes(x=Can1, y=Can2, label=row.names(pptCVA$means))) +
