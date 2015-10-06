@@ -6,6 +6,9 @@ library(agricolae)
 library(candisc)
 library(ggplot2)
 library(grid)
+library(tidyr)
+library(dplyr)
+library(ca)
 
 
 setwd("~/Dropbox/Frost_Research/Extended Macer Wines/EM_Analysis")
