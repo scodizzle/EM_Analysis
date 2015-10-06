@@ -32,15 +32,16 @@ cbind(
 )
 
 ## manova on the scaled dataset
-wetChemScale <- cbind(wetChem[,c(1,2)], scale(wetChem[,c(3:8)]))
+wetChemScale <- cbind(wetChem[,c(1,2)], scale(wetChem[,c(3:8)], center = TRUE))
 wc.man <- manova(as.matrix(wetChemScale[,-c(1,2,5)]) ~ wine, data=wetChemScale)
 summary(wc.man, test="Wilks")
 
 ## CVA 
-wcCVA <- candisc(wc.man, scale=TRUE)
+wcCVA <- candisc(wc.man, scale=FALSE)
 plot(wcCVA)
 ## CVA plot
-wcPlot <- ggplot(wcCVA$means, aes(x=Can1, y=Can2, label=row.names(wcCVA$means))) +
+wcPlot <- 
+  ggplot(wcCVA$means, aes(x=Can1, y=Can2, label=row.names(wcCVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
   geom_segment(data=as.data.frame(wcCVA$structure), aes(x=0, y=0, xend=Can1*5, yend=Can2*5, label=row.names(wcCVA$structure)), 
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
