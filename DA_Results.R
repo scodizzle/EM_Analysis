@@ -14,6 +14,9 @@ load("EMdata.Rdata")
 
 
 ############################################################################################
+## MANOVA
+daMAN <- manova(as.matrix(em.da[,-c(1:8)]) ~ (wine + judge + wine/ferm.rep + sen.rep)^2, data=em.da)
+summary(daMAN, test="Wilks")
 ## ANOVA of the DA ##
 aov.em = aov(as.matrix(em.da[,-c(1:8)]) ~ (judge + wine + wine/ferm.rep + sen.rep)^2, data=em.da)
 sum.aov.em = summary(aov.em)
