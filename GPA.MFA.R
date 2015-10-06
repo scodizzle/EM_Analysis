@@ -59,6 +59,14 @@ mfaCVA.sig2 <- MFA(cbind(sigCVA$means[,1:2],pptCVA$means[,1:5],volCVA$means[,1:8
                   group=c(2,5,8,2,2),name.group=c("da","ppt","vol","wet","tds"), graph = FALSE)
 plot.MFA(mfaCVA.sig2, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
 
+## all dims and the CA dims
+mfa <- MFA(cbind(sigCVA$means,pptCVA$means,volCVA$means,wcCVA$means,caTRT$rowcoord), group=c(7,5,8,5,8),
+              name.group=c("da","ppt","vol","wet","tds"), graph = FALSE)
+plot.MFA(mfa, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
+
+
+
+
 #########
 ## GPA
 gpaCVA <- GPA(cbind(sigCVA$means,pptCVA$means,volCVA$means,wcCVA$means,tdsBA.CVA$means), group=c(7,5,8,5,5),

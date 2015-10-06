@@ -46,7 +46,7 @@ summary(manova(as.matrix(EM.out[,-c(1:3)]) ~ trt + fermRep + fermRep/sensation, 
 
 ##  Ugh....  nothing.....
 ##  try just the trt...
-TRT <- spread(tdsNORMall[,-3], key=time, value=domRate)
+TRT <- spread(tdsNORMall[,-4], key=time, value=freq)
 TRT <- cbind(TRT[TRT$sensation == "Sweet",][,-c(1)], TRT[TRT$sensation == "Sour",][,-c(1:2)], 
       TRT[TRT$sensation == "Bitter",][,-c(1:2)], TRT[TRT$sensation == "Hot",][,-c(1:2)], 
       TRT[TRT$sensation == "Astringent",][,-c(1:2)])
