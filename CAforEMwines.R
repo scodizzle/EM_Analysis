@@ -7,6 +7,7 @@ library(candisc)
 library(ggplot2)
 # start with the normalized TDS data.....  
 
+save(list=c("tdsNORMall","norm.ready"), file="CAtds.RData")
 load("~/Dropbox/Frost_Research/Extended Macer Wines/EM_Analysis/tds.Rdata")
 
 ## from the normalized EM dataset..
@@ -39,7 +40,6 @@ EM.out$fermRep <- factor(EM.out$fermRep)
 EM.out <- EM.out[,c("trt","fermRep","sensation","Dim1","Dim2","Dim3","Dim4","Mass","ChiDist","Inertia")]
 
 
-
 ## ANOVA
 summary.aov(lm(as.matrix(EM.out[,-c(1:3)]) ~ trt + sensation, data=EM.out))
 summary(manova(as.matrix(EM.out[,-c(1:3)]) ~ trt + fermRep + fermRep/sensation, data=EM.out), test="Wilks")
@@ -57,12 +57,63 @@ TRT <- TRT[,-1]
 colnames(TRT) <- rr
 caTRT <- ca(TRT)
 
+## make a dataframe for plotting...
+caTime <- data.frame(code = row.names(caTRT$colcoord), caTRT$colcoord, row.names = 1:500)
+caTime$sensation <- gsub("[0-9]","", caTime$code)
+caTime$sensation <- factor(caTime$sensation)
+caTime$time <- gsub("[^0-9]", "", caTime$code)
 
-ggplot(as.data.frame(caTRT$rowcoord), aes(x=Dim1, y=Dim2, label=row.names(caTRT$rowcoord))) + 
+##  plot Dim1 vs Dim2
+ggplot(caTime, aes(x=Dim1, y=Dim2)) +
+  geom_point(aes(shape=sensation, color=sensation), size=2) +
+  geom_text(aes(label=time), family = "Times New Roman", fontface="bold", size=4, hjust=1.5, alpha=0.6) +
+  
+  geom_text(data=as.data.frame(caTRT$rowcoord), aes(x=Dim1, y=Dim2, label=row.names(caTRT$rowcoord)),
+            family = "Times New Roman", fontface="bold", size=7) +
+  
+  scale_x_continuous(paste("Dim 1 ", "(", round(summary(caTRT)$scree[1,3],1), "%", ")", sep="")) +
+  scale_y_continuous(paste("Dim 2 ", "(", round(summary(caTRT)$scree[2,3],1), "%", ")", sep="")) +
+  
+  #scale_shape_manual(name="Sensation", labels=c("Astringent", "Bitter", "Hot", "Sour", "Sweet"), values = c(15,8,2,5,12)) +
+  
+  theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
+        axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
+        panel.background = element_rect(fill = "transparent"),
+        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
+        panel.grid.major = element_line(color="transparent"),
+        legend.text = element_text(size = 13, color = "black", face="italic", family = "Times New Roman"),
+        legend.title = element_text(size = 13, color = "black", face = "bold", family = "Times New Roman"),
+        legend.key = element_rect(fill = "transparent"),
+        legend.position = "bottom")
+  
+## Dim1 vs Dim3
+ggplot(caTime, aes(x=Dim1, y=Dim3)) +
+  geom_point(aes(shape=sensation, color=sensation), size=2) +
+  geom_text(aes(label=time), family = "Times New Roman", fontface="bold", size=4, hjust=1.5, alpha=0.6) +
+  
+  geom_text(data=as.data.frame(caTRT$rowcoord), aes(x=Dim1, y=Dim3, label=row.names(caTRT$rowcoord)),
+            family = "Times New Roman", fontface="bold", size=7) +
+  
+  scale_x_continuous(paste("Dim 1 ", "(", round(summary(caTRT)$scree[1,3],1), "%", ")", sep="")) +
+  scale_y_continuous(paste("Dim 3 ", "(", round(summary(caTRT)$scree[3,3],1), "%", ")", sep="")) +
+  
+  #scale_shape_manual(name="Sensation", labels=c("Astringent", "Bitter", "Hot", "Sour", "Sweet"), values = c(15,8,2,5,12)) +
+  
+  theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
+        axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
+        panel.background = element_rect(fill = "transparent"),
+        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
+        panel.grid.major = element_line(color="transparent"),
+        legend.text = element_text(size = 13, color = "black", face="italic", family = "Times New Roman"),
+        legend.title = element_text(size = 13, color = "black", face = "bold", family = "Times New Roman"),
+        legend.key = element_rect(fill = "transparent"),
+        legend.position = "bottom")
+
+
+ggplot(as.data.frame(caTRT$rowcoord), aes(x=Dim1, y=Dim2, label=row.names(caTRT$rowcoord))) +
   geom_text()
-
-
-
+ggplot(as.data.frame(caTRT$rowcoord), aes(x=Dim1, y=Dim3, label=row.names(caTRT$rowcoord))) +
+  geom_text()
 
 
 
