@@ -11,66 +11,37 @@ library(SensoMineR)
 library(plyr)
 
 
-save(list = c("sigCVA", "pptCVA", "volCVA", "wcCVA", "tdsBA.CVA", "tdsSigCVA", "tdsBA.CVA", "means"), file = "GPA_MFA.RData")
+save(list = c("sigCVA", "pptCVA", "volCVA", "wcCVA", "tdsBA.CVA", "tdsSigCVA", "tdsBA.CVA", "means", "caTRT", "mfaDat"), file = "GPA_MFA.RData")
 load("GPA_MFA.RData")
 
 ##############################################################################################################
 #### MFA 
-mfaAll <- MFA(cbind(means$da, means$ppt, means$tds, means$vol, means$wet), 
-              group = c(18,5,25,29,6), name.group = c("da","ppt","tds","vol","wet"))
+mfaAll <- GPA(cbind(mfaDat$da, mfaDat$ppt, mfaDat$vol, mfaDat$wet, mfaDat$tds), 
+              group = c(7,5,8,5,8), name.group = c("da","ppt","vol","wet","tds"))
 plot.MFA(mfaAll, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
-## sig terms
-mfaSig <- MFA(cbind(means$da[,c("Sweet", "Sour", "Bitter", "Hot", "Astringency", "Drying", "AstTexture")], means$ppt,
-                    means$tds[,c("B.area","B.maxDom","B.dur")], 
-                    means$vol[,-which(names(means$vol) %in% c("ethyl.decanoate", "vitispirane.I.and.II"))],
-                    means$wet[,c("pH","TA","MA","AA","EtOH")]), group = c(7,5,3,27,5), 
-                    name.group = c("da","ppt","tds","vol","wet")) 
+
+mfaSig <- MFA(cbind(mfaDat$da[,1:2], mfaDat$ppt[,1:5], mfaDat$vol[,1:8], mfaDat$wet[,1:2], mfaDat$tds[,1:3]), 
+              group = c(2,5,8,2,3), name.group = c("da","ppt","vol","wet","tds"))
 plot.MFA(mfaSig, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
 
-#### GPA
-gpaAll <- GPA(cbind(means$da, means$ppt, means$tds, means$vol, means$wet), 
-              group = c(18,5,25,29,6), name.group = c("da","ppt","tds","vol","wet"))
-plot.GPA(gpaAll, choix = "ind", habillage="group", partial="all", title="Generalized Procrustes Analysis")
-
-gpaSig <- GPA(cbind(means$da[,c("Sweet", "Sour", "Bitter", "Hot", "Astringency", "Drying", "AstTexture")], means$ppt,
-                    means$tds[,c("B.area","B.maxDom","B.dur")], 
-                    means$vol[,-which(names(means$vol) %in% c("ethyl.decanoate", "vitispirane.I.and.II"))],
-                    means$wet[,c("pH","TA","MA","AA","EtOH")]), group = c(7,5,3,27,5), 
-                    name.group = c("da","ppt","tds","vol","wet")) 
-plot.GPA(gpaSig, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
-
-##########
-## MFA of the CVA dims
-lapply(list(sigCVA$means,pptCVA$means,volCVA$means,wcCVA$means,tdsBA.CVA$means), dim)
-## all the dimns
-mfaCVA <- MFA(cbind(sigCVA$means,pptCVA$means,volCVA$means,wcCVA$means,tdsBA.CVA$means), group=c(7,5,8,5,5),
-              name.group=c("da","ppt","vol","wet","tds"), graph = FALSE)
-plot.MFA(mfaCVA, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
-## just 3 dims...  
-mfaCVA.3 <- MFA(cbind(sigCVA$means[,1:3],pptCVA$means[,1:3],volCVA$means[,1:3],wcCVA$means[,1:3],tdsBA.CVA$means[,1:3]), 
-                group=c(3,3,3,3,3),name.group=c("da","ppt","vol","wet","tds"), graph=FALSE)
-plot.MFA(mfaCVA.3, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
-## significant dims.. 
-mfaCVA.sig <- MFA(cbind(sigCVA$means[,1:2],pptCVA$means[,1:5],volCVA$means[,1:8],wcCVA$means[,1:2],tdsBA.CVA$means[,1]), 
-                group=c(2,5,8,2,1),name.group=c("da","ppt","vol","wet","tds"), graph = FALSE)
-plot.MFA(mfaCVA.sig, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
-## using the second tds CVA tdsSigCVA
-mfaCVA.sig2 <- MFA(cbind(sigCVA$means[,1:2],pptCVA$means[,1:5],volCVA$means[,1:8],wcCVA$means[,1:2],tdsSigCVA$means[,1:2]), 
-                  group=c(2,5,8,2,2),name.group=c("da","ppt","vol","wet","tds"), graph = FALSE)
-plot.MFA(mfaCVA.sig2, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
-
-## all dims and the CA dims
-mfa <- MFA(cbind(sigCVA$means,pptCVA$means,volCVA$means,wcCVA$means,caTRT$rowcoord), group=c(7,5,8,5,8),
-              name.group=c("da","ppt","vol","wet","tds"), graph = FALSE)
-plot.MFA(mfa, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
-
-
+mfa3 <- MFA(cbind(mfaDat$da[,1:3], mfaDat$ppt[,1:3], mfaDat$vol[,1:3], mfaDat$wet[,1:3], mfaDat$tds[,1:3]), 
+              group = c(3,3,3,3,3), name.group = c("da","ppt","vol","wet","tds"))
+plot.MFA(mfa3, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
 
 
 #########
 ## GPA
-gpaCVA <- GPA(cbind(sigCVA$means,pptCVA$means,volCVA$means,wcCVA$means,tdsBA.CVA$means), group=c(7,5,8,5,5),
-              name.group=c("da","ppt","vol","wet","tds"), graph = FALSE)
+gpaAll <- GPA(cbind(mfaDat$da, mfaDat$ppt, mfaDat$vol, mfaDat$wet, mfaDat$tds), 
+              group = c(7,5,8,5,8), name.group = c("da","ppt","vol","wet","tds"))
+plot.GPA(gpaAll, choix = "ind", habillage="group", partial="all", title="")
+
+gpaSig <- GPA(cbind(mfaDat$da[,1:2], mfaDat$ppt[,1:5], mfaDat$vol[,1:8], mfaDat$wet[,1:2], mfaDat$tds[,1:3]), 
+              group = c(2,5,8,2,3), name.group = c("da","ppt","vol","wet","tds"))
+plot.GPA(mfaSig, choix = "ind", habillage="group", partial="all", title="")
+
+gpa3 <- GPA(cbind(mfaDat$da[,1:3], mfaDat$ppt[,1:3], mfaDat$vol[,1:3], mfaDat$wet[,1:3], mfaDat$tds[,1:3]), 
+            group = c(3,3,3,3,3), name.group = c("da","ppt","vol","wet","tds"))
+plot.GPA(mfa3, choix = "ind", habillage="group", partial="all", title="")
 
 ##############################################################################################################
 ##############################################################################################################
@@ -123,6 +94,9 @@ pptCVA$means,
 volCVA$means,
 wcCVA$means,
 tdsBA.CVA$means)
+
+### 
+mfaDat <- list(da = sigCVA$means, ppt = pptCVA$means, vol = volCVA$means, wet = wcCVA$means, tds = caTRT$rowcoord)
 
 
 
