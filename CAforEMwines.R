@@ -5,10 +5,12 @@ library(dplyr)
 library(ca)
 library(candisc)
 library(ggplot2)
+library(gridExtra)
+library(grid)
 # start with the normalized TDS data.....  
 
 save(list=c("tdsNORMall","norm.ready"), file="CAtds.RData")
-load("~/Dropbox/Frost_Research/Extended Macer Wines/EM_Analysis/tds.Rdata")
+load("CAtds.Rdata")
 
 ## from the normalized EM dataset..
 
@@ -64,17 +66,21 @@ caTime$sensation <- factor(caTime$sensation)
 caTime$time <- gsub("[^0-9]", "", caTime$code)
 
 ##  plot Dim1 vs Dim2
-ggplot(caTime, aes(x=Dim1, y=Dim2)) +
-  geom_point(aes(shape=sensation, color=sensation), size=2) +
-  geom_text(aes(label=time), family = "Times New Roman", fontface="bold", size=4, hjust=1.5, alpha=0.6) +
+p1 <- 
+  ggplot(caTime, aes(x=Dim1, y=Dim2)) +
+  geom_point(aes(color=sensation), size=0) +
+  geom_text(aes(color=sensation, label=time, show_guide=FALSE), family = "Times New Roman", fontface="bold", size=5) +
   
-  geom_text(data=as.data.frame(caTRT$rowcoord), aes(x=Dim1, y=Dim2, label=row.names(caTRT$rowcoord)),
-            family = "Times New Roman", fontface="bold", size=7) +
+  #geom_text(data=as.data.frame(caTRT$rowcoord), aes(x=Dim1, y=Dim2, label=row.names(caTRT$rowcoord)),
+   #         family = "Times New Roman", fontface="bold", size=7) +
+  geom_hline(yintercept=0, linetype = "dashed") +
+  geom_vline(yintercept=0, linetype = "dashed") +
   
-  scale_x_continuous(paste("Dim 1 ", "(", round(summary(caTRT)$scree[1,3],1), "%", ")", sep="")) +
-  scale_y_continuous(paste("Dim 2 ", "(", round(summary(caTRT)$scree[2,3],1), "%", ")", sep="")) +
+  scale_x_continuous(paste("Dim 1 ", "(", round(summary(caTRT)$scree[1,3],1), "%", ")", sep=""), limits = c(-5,5)) +
+  scale_y_continuous(paste("Dim 2 ", "(", round(summary(caTRT)$scree[2,3],1), "%", ")", sep=""), limits = c(-4,4)) +
   
-  #scale_shape_manual(name="Sensation", labels=c("Astringent", "Bitter", "Hot", "Sour", "Sweet"), values = c(15,8,2,5,12)) +
+  scale_color_brewer(name="Sensation", labels=c("Astringent", "Bitter", "Hot", "Sour", "Sweet"), palette="Set1",
+                     guide=guide_legend(override.aes=list(size=4))) +
   
   theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
         axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
@@ -87,17 +93,20 @@ ggplot(caTime, aes(x=Dim1, y=Dim2)) +
         legend.position = "bottom")
   
 ## Dim1 vs Dim3
-ggplot(caTime, aes(x=Dim1, y=Dim3)) +
-  geom_point(aes(shape=sensation, color=sensation), size=2) +
-  geom_text(aes(label=time), family = "Times New Roman", fontface="bold", size=4, hjust=1.5, alpha=0.6) +
+p2 <- ggplot(caTime, aes(x=Dim1, y=Dim3)) +
+  geom_point(aes(color=sensation), size=0) +
+  geom_text(aes(color=sensation, label=time, show_guide=FALSE), family = "Times New Roman", fontface="bold", size=5) +
   
-  geom_text(data=as.data.frame(caTRT$rowcoord), aes(x=Dim1, y=Dim3, label=row.names(caTRT$rowcoord)),
-            family = "Times New Roman", fontface="bold", size=7) +
+  #geom_text(data=as.data.frame(caTRT$rowcoord), aes(x=Dim1, y=Dim3, label=row.names(caTRT$rowcoord)),
+   #         family = "Times New Roman", fontface="bold", size=7) +
+  geom_hline(yintercept=0, linetype = "dashed") +
+  geom_vline(yintercept=0, linetype = "dashed") +
   
-  scale_x_continuous(paste("Dim 1 ", "(", round(summary(caTRT)$scree[1,3],1), "%", ")", sep="")) +
-  scale_y_continuous(paste("Dim 3 ", "(", round(summary(caTRT)$scree[3,3],1), "%", ")", sep="")) +
+  scale_x_continuous(paste("Dim 1 ", "(", round(summary(caTRT)$scree[1,3],1), "%", ")", sep=""), limits = c(-5,5)) +
+  scale_y_continuous(paste("Dim 3 ", "(", round(summary(caTRT)$scree[3,3],1), "%", ")", sep=""), limits = c(-4,4)) +
   
-  #scale_shape_manual(name="Sensation", labels=c("Astringent", "Bitter", "Hot", "Sour", "Sweet"), values = c(15,8,2,5,12)) +
+  scale_color_brewer(name="Sensation", labels=c("Astringent", "Bitter", "Hot", "Sour", "Sweet"), palette="Set1",
+                     guide=guide_legend(override.aes=list(size=4))) +
   
   theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
         axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
@@ -110,14 +119,65 @@ ggplot(caTime, aes(x=Dim1, y=Dim3)) +
         legend.position = "bottom")
 
 
-ggplot(as.data.frame(caTRT$rowcoord), aes(x=Dim1, y=Dim2, label=row.names(caTRT$rowcoord))) +
-  geom_text()
-ggplot(as.data.frame(caTRT$rowcoord), aes(x=Dim1, y=Dim3, label=row.names(caTRT$rowcoord))) +
-  geom_text()
+p3 <- ggplot(as.data.frame(caTRT$rowcoord), aes(x=Dim1, y=Dim2, label=row.names(caTRT$rowcoord))) +
+  geom_text(family = "Times New Roman", fontface="bold", size=7) + 
+  geom_hline(yintercept=0, linetype = "dashed") +
+  geom_vline(yintercept=0, linetype = "dashed") +
+  
+  scale_x_continuous(paste("Dim 1 ", "(", round(summary(caTRT)$scree[1,3],1), "%", ")", sep=""), limits = c(-5,5)) +
+  scale_y_continuous(paste("Dim 2 ", "(", round(summary(caTRT)$scree[2,3],1), "%", ")", sep=""), limits = c(-4,4)) +
+  
+  theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
+        axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
+        panel.background = element_rect(fill = "transparent"),
+        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
+        panel.grid.major = element_line(color="transparent"),
+        legend.text = element_text(size = 13, color = "black", face="italic", family = "Times New Roman"),
+        legend.title = element_text(size = 13, color = "black", face = "bold", family = "Times New Roman"),
+        legend.key = element_rect(fill = "transparent"),
+        legend.position = "bottom")
+
+p4 <- ggplot(as.data.frame(caTRT$rowcoord), aes(x=Dim1, y=Dim3, label=row.names(caTRT$rowcoord))) +
+  geom_text(family = "Times New Roman", fontface="bold", size=7) +
+  geom_hline(yintercept=0, linetype = "dashed") +
+  geom_vline(yintercept=0, linetype = "dashed") +
+  
+  scale_x_continuous(paste("Dim 1 ", "(", round(summary(caTRT)$scree[1,3],1), "%", ")", sep=""), limits = c(-5,5)) +
+  scale_y_continuous(paste("Dim 3 ", "(", round(summary(caTRT)$scree[3,3],1), "%", ")", sep=""), limits = c(-4,4)) +
+  theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
+        axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
+        panel.background = element_rect(fill = "transparent"),
+        panel.border = element_rect(linetype = "solid", color = "black", fill=NA),
+        panel.grid.major = element_line(color="transparent"),
+        legend.text = element_text(size = 13, color = "black", face="italic", family = "Times New Roman"),
+        legend.title = element_text(size = 13, color = "black", face = "bold", family = "Times New Roman"),
+        legend.key = element_rect(fill = "transparent"),
+        legend.position = "bottom")
+
+grid_arrange_shared_legend(p3, p4, p1, p2)
+
+## two plots one legend
+grid_arrange_shared_legend <- function(...) {
+  plots <- list(...)
+  g <- ggplotGrob(plots[[3]] + theme(legend.position="bottom"))$grobs
+  legend <- g[[which(sapply(g, function(x) x$name) == "guide-box")]]
+  lheight <- sum(legend$height)
+  grid.arrange(
+    do.call(arrangeGrob, lapply(plots, function(x)
+      x + theme(legend.position="none"))),
+    legend,
+    ncol = 1,
+    heights = unit.c(unit(1, "npc") - lheight, lheight))
+}
+
+grid_arrange_shared_legend(p1, p2, p3, p4)
 
 
-
-
-
+dsamp <- diamonds[sample(nrow(diamonds), 1000), ]
+p1 <- qplot(carat, price, data=dsamp, colour=clarity)
+p2 <- qplot(cut, price, data=dsamp, colour=clarity)
+p3 <- qplot(color, price, data=dsamp, colour=clarity)
+p4 <- qplot(depth, price, data=dsamp, colour=clarity)
+grid_arrange_shared_legend(p1, p2, p3, p4)
 
 
