@@ -16,17 +16,17 @@ load("GPA_MFA.RData")
 
 ##############################################################################################################
 #### MFA 
-mfaAll <- GPA(cbind(mfaDat$da, mfaDat$ppt, mfaDat$vol, mfaDat$wet, mfaDat$tds), 
-              group = c(7,5,8,5,8), name.group = c("da","ppt","vol","wet","tds"))
-plot.MFA(mfaAll, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
+mfaAll <- MFA(cbind(mfaDat$da, mfaDat$ppt, mfaDat$vol, mfaDat$wet, mfaDat$tds), type = rep("c",5), 
+              group = c(7,5,8,5,8), ncp = 3, name.group = c("da","ppt","vol","wet","tds"))
+plot.MFA(mfaAll, choix = "ind", habillage="group", partial="all", title="MFA All CVs")
 
 mfaSig <- MFA(cbind(mfaDat$da[,1:2], mfaDat$ppt[,1:5], mfaDat$vol[,1:8], mfaDat$wet[,1:2], mfaDat$tds[,1:3]), 
-              group = c(2,5,8,2,3), name.group = c("da","ppt","vol","wet","tds"))
-plot.MFA(mfaSig, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
+              type = rep("c",5), group = c(2,5,8,2,3), name.group = c("da","ppt","vol","wet","tds"))
+plot.MFA(mfaSig, choix = "ind", habillage="group", partial="all", title="MFA Sig CVs")
 
 mfa3 <- MFA(cbind(mfaDat$da[,1:3], mfaDat$ppt[,1:3], mfaDat$vol[,1:3], mfaDat$wet[,1:3], mfaDat$tds[,1:3]), 
-              group = c(3,3,3,3,3), name.group = c("da","ppt","vol","wet","tds"))
-plot.MFA(mfa3, choix = "ind", habillage="group", partial="all", title="Multiple Factor Analysis")
+            type = rep("c",5), group = c(3,3,3,3,3), name.group = c("da","ppt","vol","wet","tds"))
+plot.MFA(mfa3, choix = "ind", habillage="group", partial="all", title="MFA 3 CVs")
 
 
 #########
@@ -37,11 +37,11 @@ plot.GPA(gpaAll, choix = "ind", habillage="group", partial="all", title="")
 
 gpaSig <- GPA(cbind(mfaDat$da[,1:2], mfaDat$ppt[,1:5], mfaDat$vol[,1:8], mfaDat$wet[,1:2], mfaDat$tds[,1:3]), 
               group = c(2,5,8,2,3), name.group = c("da","ppt","vol","wet","tds"))
-plot.GPA(mfaSig, choix = "ind", habillage="group", partial="all", title="")
+plot.GPA(gpaSig, choix = "ind", habillage="group", partial="all", title="")
 
 gpa3 <- GPA(cbind(mfaDat$da[,1:3], mfaDat$ppt[,1:3], mfaDat$vol[,1:3], mfaDat$wet[,1:3], mfaDat$tds[,1:3]), 
             group = c(3,3,3,3,3), name.group = c("da","ppt","vol","wet","tds"))
-plot.GPA(mfa3, choix = "ind", habillage="group", partial="all", title="")
+plot.GPA(gpa3, choix = "ind", habillage="group", partial="all", title="")
 
 ##############################################################################################################
 ##############################################################################################################
