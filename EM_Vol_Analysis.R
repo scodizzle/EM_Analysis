@@ -10,6 +10,8 @@ library(xlsx)
 library(candisc)
 library(grid)
 library(reshape2)
+library(tidyr)
+#library(dplyr)
 
 save(list = c("EMvol","volCVA", "volPlot"), file = "EMvol.Rdata")
 load("EMvol.Rdata")
@@ -23,8 +25,8 @@ boxplot(EMvol[,-c(1:9)])
 ScaleVol <- cbind(EMvol[,1:9], scale(EMvol[,-c(1:9)], center = TRUE)) #mean centerscale the vol data
 
 #####  ANOVA of the scaled DATA  #####
-summary(manova(as.matrix(ScaleVol[,-c(1:9)]) ~ wine + wine/fermRep, data = ScaleVol), test="Wilks") #significant
-vol.lm <- lm(as.matrix(ScaleVol[,-c(1:9)]) ~ wine + wine/fermRep, data = ScaleVol)
+summary(manova(as.matrix(ScaleVol[,-c(1:9)]) ~ wine + wine/fermRep + anaRep, data = ScaleVol), test="Wilks") #significant
+vol.lm <- lm(as.matrix(ScaleVol[,-c(1:9)]) ~ wine + wine/fermRep + anaRep, data = ScaleVol)
 summary.aov(vol.lm)
 # All significant but ethyl.decanoate  vitispirane.I.and.II
 #LSD out...
