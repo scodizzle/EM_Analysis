@@ -47,7 +47,7 @@ wcPlot <-
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
   geom_text(data=as.data.frame(wcCVA$structure), 
             aes(x=Can1*5, y=Can2*5, label=row.names(wcCVA$structure)), family = "Times New Roman", fontface = "italic") +
-  scale_x_continuous(paste("Can 1 ", "(", round(wcCVA$pct[1],1), "%", ")", sep="")) +
+  scale_x_continuous(paste("Can 1 ", "(", round(wcCVA$pct[1],1), "%", ")", sep=""), limits = c(-6.5, 6)) +
   scale_y_continuous(paste("Can 2 ", "(", round(wcCVA$pct[2],1), "%", ")", sep="")) +
   theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
         axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
