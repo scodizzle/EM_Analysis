@@ -15,7 +15,7 @@ setwd("~/Dropbox/Frost_Research/Extended Macer Wines/EM_Analysis")
 save(list = c("em.da", "sigCVA", "daPlot"), file = "EMdata.Rdata")
 load("EMdata.Rdata")
 
-
+boxplot(em.da[,-c(1:8)])
 ############################################################################################
 ## MANOVA
 daMAN <- manova(as.matrix(em.da[,-c(1:8)]) ~ (wine + judge + wine/ferm.rep + sen.rep)^2, data=em.da)
@@ -168,6 +168,9 @@ AstTex.LSD$statistics[4]
 
 ### MANOVA and CVA analysis...    #####
 # significant DA terms
+Allman <- manova(as.matrix(em.da[,-c(1:8)]) ~ wine, data = em.da)
+AllCVA <- candisc(Allman)
+plot(AllCVA)
 sigMan <- manova(as.matrix(em.da[,c("RedFruit","PepperSpice","Aldehydic","Alcohol","Bitter","Hot","AstTexture")]) 
                  ~ wine, data=em.da)
 summary(sigMan, test="Wilks")
@@ -175,14 +178,14 @@ summary(sigMan, test="Wilks")
 sigCVA <- candisc(sigMan)
 plot(sigCVA)
 daPlot <- 
-  ggplot(sigCVA$means, aes(x=Can1, y=Can2, label=row.names(sigCVA$means))) +
+  ggplot(sigCVA$means, aes(x=Can1, y=Can3, label=row.names(sigCVA$means))) +
   geom_text(family = "Times New Roman", fontface="bold", size=7) +
-  geom_segment(data=as.data.frame(sigCVA$structure), aes(x=0, y=0, xend=Can1, yend=Can2, label=row.names(sigCVA$structure)), 
+  geom_segment(data=as.data.frame(sigCVA$structure), aes(x=0, y=0, xend=Can1, yend=Can3, label=row.names(sigCVA$structure)), 
                arrow=arrow(length=unit(0.3,"cm")), color="grey", size=1) +
   geom_text(data=as.data.frame(sigCVA$structure), 
-            aes(x=Can1, y=Can2, label=row.names(sigCVA$structure)), family = "Times New Roman", fontface = "italic") +
+            aes(x=Can1, y=Can3, label=row.names(sigCVA$structure)), family = "Times New Roman", fontface = "italic") +
   scale_x_continuous(paste("Can 1 ", "(", round(sigCVA$pct[1],1), "%", ")", sep=""), limits = c(-.75,.75)) +
-  scale_y_continuous(paste("Can 2 ", "(", round(sigCVA$pct[2],1), "%", ")", sep="")) +
+  scale_y_continuous(paste("Can 2 ", "(", round(sigCVA$pct[3],1), "%", ")", sep="")) +
   theme(axis.text = element_text(size=16, color="black", family = "Times New Roman"),
         axis.title = element_text(size=16, color="black", family = "Times New Roman", face = "bold"),
         panel.background = element_rect(fill = "transparent"),
