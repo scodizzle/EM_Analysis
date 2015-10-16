@@ -41,6 +41,7 @@ mfaMeanSig <- MFA(cbind(means$da[,c("RedFruit","PepperSpice","Aldehydic","Alcoho
                     means$wet[,-3], TRT), type=c("c","c","c","c","f"),
               group = c(7,5,27,5,500), name.group = c("da","ply","vol","wet","tds"))
 plot.MFA(mfaMeanSig, choix = "ind", habillage="group", partial="all")
+plot.MFA(mfaMeanSig, choix = "ind", habillage="group", partial="all", axes=c(1,3))
 
 noTDS <- MFA(cbind(means$da[,c("RedFruit","PepperSpice","Aldehydic","Alcohol","Bitter","Hot","AstTexture")], 
           means$ppt[,c("TotalPhenol","Anthocyanin", "SPP", "LPP", "Tannin")],
@@ -54,16 +55,32 @@ mfaMeanSig$group$contrib
 mfaMeanSig$group$cos2
 mfaMeanSig$ind$contrib
 mfaMeanSig$ind$cos2
+# contribution of the cont. variables
+mfaMeanSig$quanti.var$contrib
+# contribution of the freq varaibales
+mfaMeanSig$freq$contrib
 
 plot(mfaMeanSig, choix = "var", habillage = "group", select="contrib 10")
 mfaMeanSig$quanti.var$contrib
 
 mfaMeanSig$quanti.var$contrib[order(rowSums(mfaMeanSig$quanti.var$contrib[,1:2]), decreasing = TRUE),]
 
-dimdesc(mfaMeanSig)
+dims <- dimdesc(mfaMeanSig)
+#PCA
+plot.PCA(mfaMeanSig$separate.analyses$da, title = "PCA da")
+plot.PCA(mfaMeanSig$separate.analyses$vol, title = "PCA vol")
+plot.PCA(mfaMeanSig$separate.analyses$ply, title = "PCA ploy")
+plot.PCA(mfaMeanSig$separate.analyses$wet, title = "PCA wet")
+plot.PCA(mfaMeanSig$separate.analyses$tds, title = "PCA tds")
+
+grid.arrange(pca.da, pca.wet, pca.vol, pca.ply, leg, ncol=2, nrow = 2, 
+             layout_matrix = rbind(c(1,2), c(3,3)),
+             widths = c(2.7, 2.7), heights = c(2.5, 0.2))
 
 
-
+grid.arrange(mP+theme(legend.position="none"), pax+theme(legend.position="none"), leg, ncol=2, nrow = 2, 
+             layout_matrix = rbind(c(1,2), c(3,3)),
+             widths = c(2.7, 2.7), heights = c(2.5, 0.2))
 
 
 #########
